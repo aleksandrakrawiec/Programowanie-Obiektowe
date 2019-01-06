@@ -7,17 +7,10 @@
 
 class Order
 {
-	std::vector <Product> _products;
-	Person _customer;
-	float _value = 0;
-	int _no;
-	bool _active = true;
 
 public:
-	static int _amount;
-	Order();
-	Order(Person customer);
-	~Order();
+    Order(const Person& customer);
+
 	Person getPerson();
 	float getValue();
 	void addItem(Product item);
@@ -26,5 +19,19 @@ public:
 	void showDetails();
 	void makeArchival();
     bool isActive() const;
+
+protected:
+    std::vector <Product> _products;
+    Person _customer;
+    float _value = 0;
+    int _no;
+    std::string _name;
+    bool _active = true;
+    static int _amount;
+
+    virtual void constructName() = 0;
+
+private:
+    void constructNameByID();
 };
 

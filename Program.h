@@ -25,9 +25,6 @@ class Program
 public:
     Database database;
 
-	std::vector <Product> _product_list;
-	std::vector <Order> _order_list;
-
 	void runProgram();
 
 	class UserInterface

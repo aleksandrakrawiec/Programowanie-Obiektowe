@@ -24,18 +24,18 @@ bool Database::addProduct(Product *product)
     return true;
 }
 
-void Database::addOrder(const Order& order)
+void Database::addOrder(Order *order)
 {
     _orders.push_back(order);
 }
 
-std::vector<Order> Database::getArchivalOrders() const
+std::vector<Order *> Database::getArchivalOrders() const
 {
-    std::vector<Order> result;
+    std::vector<Order*> result;
 
-    for (const auto& order : _orders)
+    for (auto order : _orders)
     {
-        if (!order.isActive())
+        if (!order->isActive())
         {
             result.push_back(order);
         }
@@ -44,13 +44,13 @@ std::vector<Order> Database::getArchivalOrders() const
     return result;
 }
 
-std::vector<Order> Database::getActiveOrders() const
+std::vector<Order *> Database::getActiveOrders() const
 {
-    std::vector<Order> result;
+    std::vector<Order*> result;
 
-    for (const auto& order : _orders)
+    for (auto order : _orders)
     {
-        if (order.isActive())
+        if (order->isActive())
         {
             result.push_back(order);
         }
@@ -89,8 +89,8 @@ Product *Database::getProduct(int no) const
     return *foundPosition;
 }
 
-Order &Database::getOrder(int no)
+Order* Database::getOrder(int id)
 {
-    return _orders[no];
+    return _orders[id];
 
 }

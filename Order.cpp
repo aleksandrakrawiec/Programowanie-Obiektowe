@@ -6,14 +6,13 @@ using std::cout;
 using std::string;
 
 int Order::_amount = 0;
-Order::Order() {}
-Order::Order(Person customer) :
-	_customer(customer),
-	_no(_amount + 1)
+
+Order::Order(const Person &customer) :
+    _customer(customer),
+    _no(_amount + 1)
 {
-	_amount++;
+    _amount++;
 }
-Order :: ~Order() {}
 
 Person Order::getPerson()
 {
@@ -51,6 +50,8 @@ void Order::showOrder() const
 {
 	cout.width(10);
 	cout << _no;
+    cout.width(10);
+    cout << _name;
 	cout.width(20);
 	cout << _customer.getFirstName();
 	cout.width(20);
@@ -83,5 +84,10 @@ void Order::makeArchival()
 
 bool Order::isActive() const
 {
-	return _active;
+    return _active;
+}
+
+void Order::constructNameByID()
+{
+    _name += std::to_string(_amount);
 }

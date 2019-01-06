@@ -8,11 +8,13 @@ SOURCES += main.cpp \
     Order.cpp \
     Person.cpp \
     Product.cpp \
-    Program.cpp
+    Program.cpp \
+    COD_Order.cpp
 
 HEADERS += \
     Database.h \
     Order.h \
     Person.h \
     Product.h \
-    Program.h
+    Program.h \
+    COD_Order.h

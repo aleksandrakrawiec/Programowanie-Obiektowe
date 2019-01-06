@@ -8,22 +8,24 @@
 
 //using ProductPtr = std::unique_ptr<Product>;
 
+//using OrderPtr = std::unique_ptr<Order>;
+
 class Database
 {
 public:
     ~Database();
     bool addProduct(Product* product);
-    void addOrder(const Order& order);
+    void addOrder(Order* order);
 
-    std::vector<Order> getArchivalOrders() const;
-    std::vector<Order> getActiveOrders() const;
+    std::vector<Order*> getArchivalOrders() const;
+    std::vector<Order*> getActiveOrders() const;
     std::vector<Product*> getAllProducts() const;
 
     Product* getProduct(const std::string& name) const;
     Product* getProduct(int no) const;
-    Order& getOrder(int no);
+    Order* getOrder(int id);
 
 private:
     std::vector<Product*> _products;
-    std::vector<Order> _orders;
+    std::vector<Order*> _orders;
 };

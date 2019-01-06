@@ -1,9 +1,10 @@
 #include "Program.h"
 #include "Product.h"
 #include "Person.h"
+#include "COD_Order.h"
+
 #include <conio.h>
 #include <iostream>
-
 #include <algorithm>
 #include <exception>
 
@@ -59,10 +60,10 @@ void Program::showArchivalOrders()
     system("cls");
     userInterface.showOrderListHeaders();
 
-    std::vector<Order> archivalOrders = database.getArchivalOrders();
+    std::vector<Order*> archivalOrders = database.getArchivalOrders();
 
-    std::for_each(archivalOrders.begin(), archivalOrders.end(), [](const Order& order) {
-        order.showOrder();
+    std::for_each(archivalOrders.begin(), archivalOrders.end(), [](Order* order) {
+        order->showOrder();
     });
 
     showOrderListMenuOperations();
@@ -247,7 +248,27 @@ void Program::addOrder()
     cout << "Numer telefonu: ";
     std::cin >> phoneNumber;
     Person customer(firstName, lastName, phoneNumber);
-    Order order(customer);
+//    Order order(customer);
+
+    cout << "Wybierz rodzaj dostawy:\n"
+         << "1. Przesylka - platnosc przy odbiorze\n"
+         << "2. Przesylka - przedplata\n"
+         << "3. Odbior osobisty";
+
+    Order* order;
+
+    switch (getUserOptionChoice(3))
+    {
+    case 1:
+        order = new COD_Order(customer);
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    default:
+        throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+    }
 
     cout << "\nIle produktow chcesz dodac do zamowienia? ";
     std::cin >> numberOfProducts;
@@ -278,14 +299,12 @@ void Program::addOrder()
         cout << "Wprowadz numer " << i + 1 << " produktu: ";
         std::cin >> no;
         product = *products[no - 1];
-        order.addItem(product);
+        order->addItem(product);
     }
 
-    // ZADANIE: przerób na database
     database.addOrder(order);
 
 
-    //_order_list.push_back(order);
     orderMenuOperations();
 }
 
@@ -299,7 +318,7 @@ void Program::showOrderListMenuOperations()
         int no;
         cout << "\nPodaj numer zamowienia ";
         std::cin >> no;
-        database.getOrder(no-1).showDetails();
+        database.getOrder(no-1)->showDetails();
 
         cout << "\n1. PRZENIES DO ARCHIWUM"
              << "\n2. POWROT";
@@ -307,7 +326,7 @@ void Program::showOrderListMenuOperations()
         switch (getUserOptionChoice(2))
         {
         case 1:
-            database.getOrder(no-1).makeArchival(); /// to nie działa, bo to kopia (?)
+            database.getOrder(no-1)->makeArchival(); /// to nie działa, bo to kopia (?)
             break;
         case 2:
             break;
@@ -330,14 +349,10 @@ void Program::showOrderList()
 {
     userInterface.showOrderListHeaders();
 
-    //	for (int i = 0; i < Order::_amount; i++)
-    //	{
-    //        if(_order_list[i].isActive()) _order_list[i].showOrder();
-    //	}
     auto orders = database.getActiveOrders();
     for(auto order : orders)
     {
-        if(order.isActive()) order.showOrder();
+        if(order->isActive()) order->showOrder();
     }
 
     showOrderListMenuOperations();
@@ -465,6 +480,8 @@ void Program::UserInterface::showOrderListHeaders()
 {
     cout.width(10);
     cout << "Numer";
+    cout.width(10);
+    cout << "Nazwa";
     cout.width(20);
     cout << "Imie";
     cout.width(20);
