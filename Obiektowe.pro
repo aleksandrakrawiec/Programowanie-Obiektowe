@@ -9,7 +9,9 @@ SOURCES += main.cpp \
     Person.cpp \
     Product.cpp \
     Program.cpp \
-    COD_Order.cpp
+    COD_Order.cpp \
+    PRE_Order.cpp \
+    PER_Order.cpp
 
 HEADERS += \
     Database.h \
@@ -17,4 +19,6 @@ HEADERS += \
     Person.h \
     Product.h \
     Program.h \
-    COD_Order.h
+    COD_Order.h \
+    PRE_Order.h \
+    PER_Order.h

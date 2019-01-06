@@ -2,6 +2,8 @@
 #include "Product.h"
 #include "Person.h"
 #include "COD_Order.h"
+#include "PRE_Order.h"
+#include "PER_Order.h"
 
 #include <conio.h>
 #include <iostream>
@@ -263,8 +265,10 @@ void Program::addOrder()
         order = new COD_Order(customer);
         break;
     case 2:
+        order = new PRE_Order(customer);
         break;
     case 3:
+        order = new PER_Order(customer);
         break;
     default:
         throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
