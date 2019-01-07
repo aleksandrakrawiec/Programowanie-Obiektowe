@@ -26,6 +26,13 @@ public:
 
     friend std::ostream& operator<< (std::ostream& stream, const Product& product);
 
+    Product& operator<< (const std::string& name);
+    Product& operator<< (float price);
+    Product& operator<< (bool availability);
+
+    Product& operator>> (std::string& name);
+    Product& operator>> (float& price);
+    Product& operator>> (bool& availability);
 
 //    virtual void printDetailedInfo() = 0;
 };

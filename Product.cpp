@@ -61,7 +61,49 @@ void Product::printInfo()
     cout.width(10);
 	cout << _price;
 	cout.width(15);
-	_availability == true ? std::cout << "dostepny\n" : std::cout << "niedostepny\n";
+    _availability == true ? std::cout << "dostepny\n" : std::cout << "niedostepny\n";
+}
+
+Product& Product::operator<<(const std::string &name)
+{
+    _name = name;
+
+    return *this;
+}
+
+Product& Product::operator<<(float price)
+{
+    _price = price;
+
+    return *this;
+}
+
+Product& Product::operator<<(bool availability)
+{
+    _availability = availability;
+
+    return *this;
+}
+
+Product& Product::operator>>(std::string& name)
+{
+    name = _name;
+
+    return *this;
+}
+
+Product& Product::operator>>(float& price)
+{
+    price = _price;
+
+    return *this;
+}
+
+Product& Product::operator>>(bool& availability)
+{
+    availability = _availability;
+
+    return *this;
 }
 
 std::ostream& operator<< (std::ostream& stream, const Product& product)
