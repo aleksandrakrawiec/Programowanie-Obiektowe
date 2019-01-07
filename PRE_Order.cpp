@@ -1,7 +1,7 @@
 #include "PRE_Order.h"
 
 PRE_Order::PRE_Order(const Person &person) :
-    Order(person)
+    DeliveryOrder(person)
 {
     constructName();
 }
