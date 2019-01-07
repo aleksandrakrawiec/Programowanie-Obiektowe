@@ -36,7 +36,7 @@ void Program::runProgram()
 
 void Program::mainMenu()
 {
-    userInterface.showMenu();
+    _userInterface.showMenu();
     switch (getUserOptionChoice(3))
     {
     case 1:
@@ -62,9 +62,9 @@ void Program::showActiveOrders()
 void Program::showArchivalOrders()
 {
     system("cls");
-    userInterface.showOrderListHeaders();
+    _userInterface.showOrderListHeaders();
 
-    std::vector<Order*> archivalOrders = database.getArchivalOrders();
+    std::vector<Order*> archivalOrders = _database.getArchivalOrders();
 
     std::for_each(archivalOrders.begin(), archivalOrders.end(), [](Order* order) {
         cout << *order;
@@ -78,7 +78,7 @@ void Program::showArchivalOrders()
 
 void Program::productMenu()
 {
-    userInterface.showProductMenu();
+    _userInterface.showProductMenu();
 
     switch (getUserOptionChoice(4))
     {
@@ -111,7 +111,7 @@ void Program::addProduct()
     cout << "Podaj cene produktu: ";
     price = getFloatInput();
 
-    if (!database.addProduct(new Product(name, price)))
+    if (!_database.addProduct(new Product(name, price)))
     {
         cout << "Produkt o podanej nazwie znajduje sie juz w bazie\n";
         cout << "1. POWROT";
@@ -133,9 +133,9 @@ void Program::addProduct()
 void Program::showProductList()
 {
     system("cls");
-    userInterface.showProductListHeaders();
+    _userInterface.showProductListHeaders();
 
-    std::vector<Product*> products = database.getAllProducts();
+    std::vector<Product*> products = _database.getAllProducts();
 
     std::for_each(products.begin(), products.end(), [](Product* product){
 //        product->printInfo();
@@ -173,14 +173,14 @@ void Program::findProduct()
         cout << "Podaj nazwe produktu: ";
         name = getStringInput();
 
-        product = database.getProduct(name);
+        product = _database.getProduct(name);
         break;
     case 2:
         system("cls");
         cout << "Podaj numer produktu: ";
         no = getIntInput();
 
-        product = database.getProduct(no);
+        product = _database.getProduct(no);
         break;
     default:
         throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
@@ -206,7 +206,7 @@ void Program::findProduct()
     else
     {
         system("cls");
-        userInterface.showProductListHeaders();
+        _userInterface.showProductListHeaders();
         cout << *product;
 //        product->printInfo();
 
@@ -218,7 +218,7 @@ void Program::findProduct()
 
 void Program::orderMenuOperations()
 {
-    userInterface.showOrderMenu();
+    _userInterface.showOrderMenu();
 
     switch (getUserOptionChoice(4))
     {
@@ -286,7 +286,7 @@ void Program::addOrder()
     cout << "\nIle produktow chcesz dodac do zamowienia? ";
     numberOfProducts = getIntInput();
 
-    std::vector<Product*> products = database.getAllProducts();
+    std::vector<Product*> products = _database.getAllProducts();
 
     cout << "\nCzy chcesz wyswietlic liste wszystkich produktow?\n"
          << "1. Tak\n"
@@ -296,7 +296,7 @@ void Program::addOrder()
     {
     case 1:
         cout << "\n\n";
-        userInterface.showProductListHeaders();
+        _userInterface.showProductListHeaders();
         std::for_each(products.begin(), products.end(), [](Product* product){
             cout << *product;
 //            product->printInfo();
@@ -317,7 +317,7 @@ void Program::addOrder()
         order->addItem(product);
     }
 
-    database.addOrder(order);
+    _database.addOrder(order);
 
 
     _currentMenu = Program::orderMenuOperations;
@@ -325,7 +325,7 @@ void Program::addOrder()
 
 void Program::showOrderListMenuOperations()
 {
-    userInterface.showOrderListMenu();
+    _userInterface.showOrderListMenu();
 
     switch (getUserOptionChoice(2))
     {
@@ -333,7 +333,7 @@ void Program::showOrderListMenuOperations()
         int no;
         cout << "\nPodaj numer zamowienia ";
         no = getIntInput();
-        database.getOrder(no-1)->showDetails();
+        _database.getOrder(no-1)->showDetails();
 
         cout << "\n1. PRZENIES DO ARCHIWUM"
              << "\n2. POWROT";
@@ -341,7 +341,7 @@ void Program::showOrderListMenuOperations()
         switch (getUserOptionChoice(2))
         {
         case 1:
-            database.getOrder(no-1)->makeArchival(); /// to nie działa, bo to kopia (?)
+            _database.getOrder(no-1)->makeArchival(); /// to nie działa, bo to kopia (?)
             break;
         case 2:
             break;
@@ -362,9 +362,9 @@ void Program::showOrderListMenuOperations()
 
 void Program::showOrderList()
 {
-    userInterface.showOrderListHeaders();
+    _userInterface.showOrderListHeaders();
 
-    auto orders = database.getActiveOrders();
+    auto orders = _database.getActiveOrders();
     for(auto order : orders)
     {
         if(order->isActive())
@@ -377,7 +377,7 @@ void Program::showOrderList()
 
 void Program::findProductMenu(Product* product)
 {   
-    userInterface.showFindProductMenu();
+    _userInterface.showFindProductMenu();
 
     switch (getUserOptionChoice(3))
     {
@@ -402,9 +402,7 @@ void Program::editProduct(Product *product)
     string name;
     float price;
 
-    userInterface.showEditProductMenu(product);
-
-
+    _userInterface.showEditProductMenu(product);
 
     switch (getUserOptionChoice(4))
     {
@@ -524,7 +522,7 @@ float Program::getFloatInput() const
 
 
 ///INTERFACE
-void Program::UserInterface::showMenu()
+void Program::UserInterface::showMenu() const
 {
     system("cls");
     cout << "1. PRODUKTY\n"
@@ -545,7 +543,7 @@ void Program::UserInterface::showProductListHeaders()
     cout << "Dostepnosc\n";
 }
 
-void Program::UserInterface::showOrderListHeaders()
+void Program::UserInterface::showOrderListHeaders() const
 {
     cout.width(10);
     cout << "Numer";
@@ -560,7 +558,7 @@ void Program::UserInterface::showOrderListHeaders()
 }
 
 
-void Program::UserInterface::showProductMenu()
+void Program::UserInterface::showProductMenu() const
 {
     system("cls");
     cout << "1. LISTA PRODUKTOW\n"
@@ -569,7 +567,7 @@ void Program::UserInterface::showProductMenu()
          << "4. POWROT DO MENU\n";
 }
 
-void Program::UserInterface::showOrderMenu()
+void Program::UserInterface::showOrderMenu() const
 {
     system("cls");
     cout << "1. AKTYWNE ZAMOWIENIA\n"
@@ -578,7 +576,7 @@ void Program::UserInterface::showOrderMenu()
          << "4. POWROT DO MENU\n";
 }
 
-void Program::UserInterface::showPersonHeaders()
+void Program::UserInterface::showPersonHeaders() const
 {
 
     cout.width(20);
@@ -589,7 +587,7 @@ void Program::UserInterface::showPersonHeaders()
     cout << "Numer telefonu\n";
 }
 
-void Program::UserInterface::showEditProductMenu(Product * const product)
+void Program::UserInterface::showEditProductMenu(Product * const product) const
 {
     system("cls");
     cout << "1. EDYTUJ NAZWE\n";
@@ -605,13 +603,13 @@ void Program::UserInterface::showEditProductMenu(Product * const product)
     cout << "4. POWROT";
 }
 
-void Program::UserInterface::showOrderListMenu()
+void Program::UserInterface::showOrderListMenu() const
 {
     cout << "\n\n1. WYSWIETL SZCZEGOLY WYBRANEGO ZAMOWIENIA"
          << "\n2. POWROT";
 }
 
-void Program::UserInterface::showFindProductMenu()
+void Program::UserInterface::showFindProductMenu() const
 {
     cout << "1. EDYTUJ PRODUKT\n";
     cout << "2. WYSZUKAJ KOLEJNY PRODUKT\n";

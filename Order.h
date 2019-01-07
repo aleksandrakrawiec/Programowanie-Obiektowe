@@ -8,16 +8,15 @@
 
 class Order
 {
-
 public:
     Order(const Person& customer);
 
-	Person getPerson();
-	float getValue();
-	void addItem(Product item);
-	void showProducts();
+    Person getPerson() const;
+    float getValue() const;
+    void addItem(const Product &item);
+    void showProducts() const;
     void showOrder() const;
-	void showDetails();
+    void showDetails() const;
 	void makeArchival();
     bool isActive() const;
 
@@ -34,8 +33,5 @@ protected:
     static int _amount;
 
     virtual void constructName() = 0;
-
-private:
-    void constructNameByID();
 };
 

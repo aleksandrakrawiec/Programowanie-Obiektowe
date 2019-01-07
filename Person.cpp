@@ -4,18 +4,11 @@
 using std::cout;
 using std::string;
 
-Person::Person()
-{
-}
 
 Person::Person(string firstName, string lastName, int phoneNumber) :
 	_firstName(firstName),
 	_lastName(lastName),
 	_phoneNumber(phoneNumber) {}
-
-Person::~Person()
-{
-}
 
 string Person::getFirstName() const
 {

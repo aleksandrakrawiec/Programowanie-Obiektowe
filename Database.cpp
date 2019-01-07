@@ -20,7 +20,8 @@ bool Database::addProduct(Product *product)
     }
 
     _products.push_back(product);
-    Product::_amount++; // nie wiem czy to jest ok
+
+    Product::increaseProductsAmount();
     return true;
 }
 

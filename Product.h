@@ -6,23 +6,19 @@ using std::string;
 
 class Product
 {
-	string _name;
-	float _price;
-	int _no;
-	bool _availability;
-
 public:
-    static int _amount;
-	Product();
-	Product(string name, float price);
-    string getName();
-    float getPrice();
-    int getNo();
-	bool getAvailability();
-	void setName(string name);
+    Product();
+    Product(const string& name, float price);
+
+    string getName() const;
+    float getPrice() const;
+    int getNo() const;
+    bool getAvailability() const;
+    void setName(const string& name);
 	void setPrice(float price);
 	void changeAvailability();
-    void printInfo();
+    void printInfo() const;
+    static void increaseProductsAmount();
 
     friend std::ostream& operator<< (std::ostream& stream, const Product& product);
 
@@ -34,7 +30,14 @@ public:
     Product& operator>> (float& price);
     Product& operator>> (bool& availability);
 
-//    virtual void printDetailedInfo() = 0;
+private:
+    static int _amount;
+
+    int _no;
+    string _name;
+    float _price;
+    bool _availability;
+
 };
 
 

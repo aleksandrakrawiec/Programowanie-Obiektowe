@@ -13,23 +13,23 @@ Order::Order(const Person &customer) :
     _amount++;
 }
 
-Person Order::getPerson()
+Person Order::getPerson() const
 {
 	return _customer;
 }
 
-float Order::getValue()
+float Order::getValue() const
 {
 	return _value;
 }
 
-void Order::addItem(Product item)
+void Order::addItem(const Product& item)
 {
 	_products.push_back(item);
     _value += item.getPrice();
 }
 
-void Order::showProducts()
+void Order::showProducts() const
 {
 	cout.width(20);
 	cout << "Nazwa produktu";
@@ -79,8 +79,7 @@ std::ostream& operator<<(std::ostream& stream, const Order& order)
     return stream;
 }
 
-
-void Order::showDetails()
+void Order::showDetails() const
 {
 	system("cls");
 	cout << "DANE KLIENTA\n"
@@ -110,10 +109,4 @@ bool Order::isActive() const
 Product& Order::operator[](int index)
 {
     return _products[index];
-}
-
-
-void Order::constructNameByID()
-{
-    _name += std::to_string(_amount);
 }

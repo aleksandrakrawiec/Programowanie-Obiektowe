@@ -6,50 +6,52 @@
 
 class Program
 {    
-	void showActiveOrders();
-	void showArchivalOrders();
+public:
+    class UserInterface
+    {
+    public:
+        static void showProductListHeaders();
+
+        void showMenu() const;
+        void showProductMenu() const;
+        void showOrderMenu() const;
+        void showOrderListHeaders() const;
+        void showOrderListMenu() const;
+        void showFindProductMenu() const;
+        void showPersonHeaders() const;
+        void showEditProductMenu(Product* const product) const;
+    };
+
+
+	void runProgram();
+
+private:
+    Database _database;
+    UserInterface _userInterface;
+
+    std::function<void(Program*)> _currentMenu;
+    std::function<void(Program*, Product*)> _findingProductFunction;
+
+    bool _isEnd = false;
+    bool _isFindingProduct = false;
+    Product* _findingProduct = nullptr;
+
+    void showActiveOrders();
+    void showArchivalOrders();
     void mainMenu();
     void productMenu();
-	void addProduct();
-	void showProductList();
-	void findProduct();
-	void orderMenuOperations();
-	void addOrder();
-	void showOrderList();
-	void showOrderListMenuOperations();
+    void addProduct();
+    void showProductList();
+    void findProduct();
+    void orderMenuOperations();
+    void addOrder();
+    void showOrderList();
+    void showOrderListMenuOperations();
     void findProductMenu(Product *product);
-	void editProduct(Product *product);
+    void editProduct(Product *product);
 
     int getUserOptionChoice(int optionsNumber) const;
     std::string getStringInput() const;
     int getIntInput() const;
     float getFloatInput() const;
-
-public:
-    Database database;
-
-	void runProgram();
-
-	class UserInterface
-	{
-	public:
-		void showMenu();
-		void showProductMenu();
-		void showOrderMenu();
-		void showOrderListMenu();
-        void showFindProductMenu();
-		static void showProductListHeaders();
-        static void showOrderListHeaders();
-		void showPersonHeaders();
-        void showEditProductMenu(Product* const product);
-	};
-
-private:
-	UserInterface userInterface;
-    std::function<void(Program*)> _currentMenu;
-    std::function<void(Program*, Product*)> _findingProductFunction;
-    bool _isEnd = false;
-    bool _isFindingProduct = false;
-
-    Product* _findingProduct = nullptr;
 };

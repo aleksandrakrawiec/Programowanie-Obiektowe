@@ -9,7 +9,7 @@ int Product::_amount = 0;
 
 Product::Product() {}
 
-Product::Product(string name, float price) :
+Product::Product(const string& name, float price) :
     _no(_amount + 1),
 	_name(name),
 	_price(price),
@@ -17,17 +17,17 @@ Product::Product(string name, float price) :
 {
 }
 
-string Product::getName()
+string Product::getName() const
 {
 	return _name;
 }
 
-void Product::setName(string name)
+void Product::setName(const std::string &name)
 {
 	_name = name;
 }
 
-float Product::getPrice()
+float Product::getPrice() const
 {
 	return _price;
 }
@@ -37,12 +37,12 @@ void Product::setPrice(float price)
 	_price = price;
 }
 
-int Product::getNo()
+int Product::getNo() const
 {
 	return _no;
 }
 
-bool Product::getAvailability()
+bool Product::getAvailability() const
 {
 	return _availability;
 }
@@ -52,7 +52,7 @@ void Product::changeAvailability()
 	_availability = !_availability;
 }
 
-void Product::printInfo()
+void Product::printInfo() const
 {
 	cout.width(8);
 	cout << _no;
@@ -62,6 +62,11 @@ void Product::printInfo()
 	cout << _price;
 	cout.width(15);
     _availability == true ? std::cout << "dostepny\n" : std::cout << "niedostepny\n";
+}
+
+void Product::increaseProductsAmount()
+{
+    _amount++;
 }
 
 Product& Product::operator<<(const std::string &name)
