@@ -68,7 +68,7 @@ void Program::showArchivalOrders()
         order->showOrder();
     });
 
-    showOrderListMenuOperations();
+    _currentMenu = Program::showOrderListMenuOperations;
 
 }
 
@@ -217,16 +217,16 @@ void Program::orderMenuOperations()
     switch (getUserOptionChoice(4))
     {
     case 1:
-        showActiveOrders();
+        _currentMenu = Program::showActiveOrders;
         break;
     case 2:
-        showArchivalOrders();
+        _currentMenu = Program::showArchivalOrders;
         break;
     case 3:
-        addOrder();
+        _currentMenu = Program::addOrder;
         break;
     case 4:
-        runProgram();
+        _currentMenu = Program::mainMenu;
         break;
     default:
         throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
@@ -309,7 +309,7 @@ void Program::addOrder()
     database.addOrder(order);
 
 
-    orderMenuOperations();
+    _currentMenu = Program::orderMenuOperations;
 }
 
 void Program::showOrderListMenuOperations()
@@ -339,10 +339,10 @@ void Program::showOrderListMenuOperations()
         }
 
         system("cls");
-        showOrderList();
+        _currentMenu = Program::showOrderList;
         break;
     case 2:
-        orderMenuOperations();
+        _currentMenu = Program::orderMenuOperations;
         break;
     default:
         throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
@@ -359,7 +359,7 @@ void Program::showOrderList()
         if(order->isActive()) order->showOrder();
     }
 
-    showOrderListMenuOperations();
+    _currentMenu = Program::showOrderListMenuOperations;
 }
 
 void Program::findProductMenu(Product* product)
