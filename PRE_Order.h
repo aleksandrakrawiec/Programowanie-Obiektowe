@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Order.h"
+#include "DeliveryOrder.h"
 
-class PRE_Order : public Order
+class PRE_Order : public DeliveryOrder
 {
 public:
     PRE_Order(const Person& person);

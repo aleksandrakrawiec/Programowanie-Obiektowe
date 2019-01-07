@@ -1,7 +1,7 @@
 #include "COD_Order.h"
 
 COD_Order::COD_Order(const Person &person) :
-    Order(person)
+    DeliveryOrder(person)
 {
     constructName();
 }
