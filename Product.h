@@ -19,7 +19,7 @@ public:
     int getNo();
 	bool getAvailability();
 	void setName(string name);
-	void setPrice(int price);
+	void setPrice(float price);
 	void changeAvailability();
     void printInfo();
 

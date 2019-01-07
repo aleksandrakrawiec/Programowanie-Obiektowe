@@ -32,7 +32,7 @@ float Product::getPrice()
 	return _price;
 }
 
-void Product::setPrice(int price)
+void Product::setPrice(float price)
 {
 	_price = price;
 }

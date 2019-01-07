@@ -9,6 +9,8 @@
 #include <iostream>
 #include <algorithm>
 #include <exception>
+#include <string>
+#include <cstdlib>
 
 using std::cout;
 using std::string;
@@ -103,10 +105,10 @@ void Program::addProduct()
     system("cls");
 
     cout << "Podaj nazwe produktu: ";
-    std::getline(std::cin, name);
+    name = getStringInput();
+
     cout << "Podaj cene produktu: ";
-    std::cin >> price;
-    std::cin.ignore();
+    price = getFloatInput();
 
     if (!database.addProduct(new Product(name, price)))
     {
@@ -166,15 +168,15 @@ void Program::findProduct()
     case 1:
         system("cls");
         cout << "Podaj nazwe produktu: ";
-        //std::cin.ignore();
-        getline(std::cin, name);
+        name = getStringInput();
+
         product = database.getProduct(name);
         break;
     case 2:
         system("cls");
         cout << "Podaj numer produktu: ";
-        std::cin >> no;
-        std::cin.ignore(); /// ?????
+        no = getIntInput();
+
         product = database.getProduct(no);
         break;
     default:
@@ -244,13 +246,16 @@ void Program::addOrder()
     int no;
     cout << "Wprowadz dane klienta\n"
          << "Imie: ";
-    std::cin >> firstName;
+    firstName = getStringInput();
+
     cout << "Nazwisko: ";
-    std::cin >> lastName;
+    lastName = getStringInput();
+
     cout << "Numer telefonu: ";
-    std::cin >> phoneNumber;
+    phoneNumber = getIntInput();
+
     Person customer(firstName, lastName, phoneNumber);
-//    Order order(customer);
+
 
     cout << "Wybierz rodzaj dostawy:\n"
          << "1. Przesylka - platnosc przy odbiorze\n"
@@ -275,7 +280,7 @@ void Program::addOrder()
     }
 
     cout << "\nIle produktow chcesz dodac do zamowienia? ";
-    std::cin >> numberOfProducts;
+    numberOfProducts = getIntInput();
 
     std::vector<Product*> products = database.getAllProducts();
 
@@ -301,7 +306,8 @@ void Program::addOrder()
     for (int i = 0; i < numberOfProducts; i++)
     {
         cout << "Wprowadz numer " << i + 1 << " produktu: ";
-        std::cin >> no;
+        no = getIntInput();
+
         product = *products[no - 1];
         order->addItem(product);
     }
@@ -321,7 +327,7 @@ void Program::showOrderListMenuOperations()
     case 1:
         int no;
         cout << "\nPodaj numer zamowienia ";
-        std::cin >> no;
+        no = getIntInput();
         database.getOrder(no-1)->showDetails();
 
         cout << "\n1. PRZENIES DO ARCHIWUM"
@@ -387,7 +393,7 @@ void Program::findProductMenu(Product* product)
 void Program::editProduct(Product *product)
 {
     string name;
-    int price;
+    float price;
 
     userInterface.showEditProductMenu(product);
 
@@ -398,8 +404,8 @@ void Program::editProduct(Product *product)
         system("cls");
         cout << "Obecna nazwa: " << product->getName();
         cout << "\nNowa nazwa: ";
-        //std::cin.ignore();
-        std::getline(std::cin, name);
+        name = getStringInput();
+
         product->setName(name);
         break;
 
@@ -407,7 +413,8 @@ void Program::editProduct(Product *product)
         system("cls");
         cout << "Obecna cena: " << product->getPrice();
         cout << "\nNowa cena: ";
-        std::cin >> price;
+        price = getFloatInput();
+
         product->setPrice(price);
         break;
 
@@ -457,6 +464,56 @@ int Program::getUserOptionChoice(int optionsNumber) const
 
     return charToInt(input);
 }
+
+std::string Program::getStringInput() const
+{
+    std::string input;
+    std::getline(std::cin, input);
+
+    return input;
+}
+
+int Program::getIntInput() const
+{
+    int input;
+    bool isValid;
+    do
+    {
+        isValid =  true;
+        try
+        {
+            input = std::stoi(getStringInput());
+        }
+        catch (...)
+        {
+            cout << "Niepoprawne dane! Sprobuj ponownie: \n";
+            isValid = false;
+        }
+    }
+    while (!isValid);
+
+    return input;
+}
+
+float Program::getFloatInput() const
+{
+    float input;
+    bool isValid;
+    do
+    {
+        isValid =  true;
+        input = atof(getStringInput().c_str());
+
+        if (input <= 0.0f)
+            isValid = false;
+
+    }
+    while (!isValid);
+
+    return input;
+}
+
+
 
 ///INTERFACE
 void Program::UserInterface::showMenu()

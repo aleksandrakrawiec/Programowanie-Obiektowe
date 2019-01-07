@@ -21,6 +21,9 @@ class Program
 	void editProduct(Product *product);
 
     int getUserOptionChoice(int optionsNumber) const;
+    std::string getStringInput() const;
+    int getIntInput() const;
+    float getFloatInput() const;
 
 public:
     Database database;
