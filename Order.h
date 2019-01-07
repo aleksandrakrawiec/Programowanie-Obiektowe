@@ -22,6 +22,7 @@ public:
     bool isActive() const;
 
     friend std::ostream& operator<<(std::ostream& stream, const Order& order);
+    Product& operator[](int index);
 
 protected:
     std::vector <Product> _products;

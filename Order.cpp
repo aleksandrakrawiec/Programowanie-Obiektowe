@@ -87,7 +87,7 @@ void Order::showDetails()
 		<< "Imie: " << _customer.getFirstName()
 		<< "\nNazwisko: " << _customer.getLastName()
 		<< "\nNumer telefonu: " << _customer.getPhoneNumber()
-		<< "\n\nPRODUKTY\n";
+        << "\n\nPRODUKTY\n";
 
 	Program::UserInterface::showProductListHeaders();
     for (unsigned int i = 0; i < _products.size(); i++)
@@ -105,6 +105,11 @@ void Order::makeArchival()
 bool Order::isActive() const
 {
     return _active;
+}
+
+Product& Order::operator[](int index)
+{
+    return _products[index];
 }
 
 

@@ -405,6 +405,7 @@ void Program::editProduct(Product *product)
     userInterface.showEditProductMenu(product);
 
 
+
     switch (getUserOptionChoice(4))
     {
     case 1:
