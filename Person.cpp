@@ -1,6 +1,5 @@
 #include "Person.h"
 
-#include <iostream>
 
 using std::cout;
 using std::string;
@@ -41,4 +40,18 @@ void Person::showPerson() const
 	cout << _lastName;
 	cout.width(15);
 	cout << _phoneNumber << "\n";
+}
+
+std::ostream& operator<<(std::ostream& stream, const Person& person)
+{
+    stream.width(20);
+    stream << person._firstName;
+
+    stream.width(20);
+    stream << person._lastName;
+
+    stream.width(15);
+    stream << person._phoneNumber << "\n";
+
+    return stream;
 }

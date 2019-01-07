@@ -1,4 +1,6 @@
 #pragma once
+
+#include <iostream>
 #include <string>
 
 using std::string;
@@ -17,4 +19,6 @@ public:
 	string getLastName() const;
     int getPhoneNumber() const;
     void showPerson() const;
+
+    friend std::ostream& operator<<(std::ostream& stream, const Person& person);
 };

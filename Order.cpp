@@ -1,7 +1,6 @@
 #include "Order.h"
 #include "Program.h"
 
-#include <iostream>
 using std::cout;
 using std::string;
 
@@ -60,6 +59,27 @@ void Order::showOrder() const
 	cout << _value << "\n";
 }
 
+std::ostream& operator<<(std::ostream& stream, const Order& order)
+{
+    stream.width(10);
+    stream << order._no;
+
+    stream.width(10);
+    stream << order._name;
+
+    stream.width(20);
+    stream << order._customer.getFirstName();
+
+    stream.width(20);
+    stream << order._customer.getLastName();
+
+    stream.width(10);
+    stream << order._value << "\n";
+
+    return stream;
+}
+
+
 void Order::showDetails()
 {
 	system("cls");
@@ -86,6 +106,7 @@ bool Order::isActive() const
 {
     return _active;
 }
+
 
 void Order::constructNameByID()
 {

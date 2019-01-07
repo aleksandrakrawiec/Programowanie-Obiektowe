@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <string>
 
 using std::string;
@@ -23,6 +24,10 @@ public:
 	void changeAvailability();
     void printInfo();
 
+    friend std::ostream& operator<< (std::ostream& stream, const Product& product);
+
+
 //    virtual void printDetailedInfo() = 0;
 };
+
 

@@ -3,6 +3,7 @@
 #include "Person.h"
 #include "Product.h"
 
+#include <iostream>
 #include <vector>
 
 class Order
@@ -19,6 +20,8 @@ public:
 	void showDetails();
 	void makeArchival();
     bool isActive() const;
+
+    friend std::ostream& operator<<(std::ostream& stream, const Order& order);
 
 protected:
     std::vector <Product> _products;

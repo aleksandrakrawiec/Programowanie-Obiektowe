@@ -67,7 +67,8 @@ void Program::showArchivalOrders()
     std::vector<Order*> archivalOrders = database.getArchivalOrders();
 
     std::for_each(archivalOrders.begin(), archivalOrders.end(), [](Order* order) {
-        order->showOrder();
+        cout << *order;
+//        order->showOrder();
     });
 
     _currentMenu = Program::showOrderListMenuOperations;
@@ -137,7 +138,9 @@ void Program::showProductList()
     std::vector<Product*> products = database.getAllProducts();
 
     std::for_each(products.begin(), products.end(), [](Product* product){
-        product->printInfo();
+//        product->printInfo();
+        // dereferencja, bo używamy product to wskaźnik, a operator oczekuje obiektu, niewskaźnika
+        cout << *product;
     });
 
     cout << "1. POWROT";
@@ -204,7 +207,8 @@ void Program::findProduct()
     {
         system("cls");
         userInterface.showProductListHeaders();
-        product->printInfo();
+        cout << *product;
+//        product->printInfo();
 
         _isFindingProduct = true;
         _findingProductFunction = Program::findProductMenu;
@@ -294,7 +298,8 @@ void Program::addOrder()
         cout << "\n\n";
         userInterface.showProductListHeaders();
         std::for_each(products.begin(), products.end(), [](Product* product){
-            product->printInfo();
+            cout << *product;
+//            product->printInfo();
         });
         break;
     case 2:
@@ -362,7 +367,9 @@ void Program::showOrderList()
     auto orders = database.getActiveOrders();
     for(auto order : orders)
     {
-        if(order->isActive()) order->showOrder();
+        if(order->isActive())
+            cout << *order;
+//            order->showOrder();
     }
 
     _currentMenu = Program::showOrderListMenuOperations;

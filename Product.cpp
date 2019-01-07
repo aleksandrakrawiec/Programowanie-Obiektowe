@@ -1,6 +1,6 @@
 #include "Product.h"
 
-#include <iostream>
+
 
 using std::cout;
 using std::string;
@@ -58,8 +58,25 @@ void Product::printInfo()
 	cout << _no;
 	cout.width(20);
 	cout << _name;
-	cout.width(10);
+    cout.width(10);
 	cout << _price;
 	cout.width(15);
 	_availability == true ? std::cout << "dostepny\n" : std::cout << "niedostepny\n";
+}
+
+std::ostream& operator<< (std::ostream& stream, const Product& product)
+{
+    stream.width(8);
+    stream << product._no;
+
+    stream.width(20);
+    stream << product._name;
+
+    stream.width(10);
+    stream << product._price;
+
+    cout.width(15);
+    product._availability == true ? stream << "dostepny\n" : stream << "niedostepny\n";
+
+    return stream;
 }
