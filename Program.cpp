@@ -18,6 +18,7 @@ using std::string;
 
 void Program::runProgram()
 {
+    _database.loadFromFile();
     _currentMenu = Program::mainMenu;
 
     while (!_isEnd)

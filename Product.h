@@ -8,7 +8,7 @@ class Product
 {
 public:
     Product();
-    Product(const string& name, float price);
+    Product(const string& name, float price, bool availability = true);
 
     string getName() const;
     float getPrice() const;

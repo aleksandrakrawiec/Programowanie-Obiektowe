@@ -106,7 +106,83 @@ bool Order::isActive() const
     return _active;
 }
 
+int Order::getProductsCount() const
+{
+    return _products.size();
+}
+
+
+Order &Order::operator<<(const Person &customer)
+{
+    _customer = customer;
+
+    return *this;
+}
+
+//std::ostream& operator<<(std::ostream &stream, const Person &person)
+//{
+//    stream << person.getFirstName() << std::endl;
+//    stream << person.getLastName() << std::endl;
+//    stream << person.getPhoneNumber() << std::endl;
+
+//    return stream;
+//}
+
+Order &Order::operator<<(const std::string &name)
+{
+    _name = name;
+
+    return *this;
+}
+
+Order &Order::operator<<(float value)
+{
+    _value = value;
+
+    return *this;
+}
+
+Order &Order::operator<<(bool active)
+{
+    _active = active;
+
+    return *this;
+}
+
+Order &Order::operator>>(Person &customer)
+{
+    customer = _customer;
+
+    return *this;
+}
+
+Order &Order::operator>>(std::string &name)
+{
+    name = _name;
+
+    return *this;
+}
+
+Order &Order::operator>>(float &value)
+{
+    value = _value;
+
+    return *this;
+}
+
+Order &Order::operator>>(bool &active)
+{
+    active = _active;
+
+    return *this;
+}
+
 Product& Order::operator[](int index)
+{
+    return _products[index];
+}
+
+const Product &Order::operator[](int index) const
 {
     return _products[index];
 }

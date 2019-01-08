@@ -25,6 +25,9 @@ public:
     Product* getProduct(int no) const;
     Order* getOrder(int id);
 
+    bool saveToFile() const;
+    bool loadFromFile();
+
 private:
     std::vector<Product*> _products;
     std::vector<Order*> _orders;
