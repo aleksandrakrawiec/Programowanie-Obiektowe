@@ -8,6 +8,7 @@
 
 class Order
 {
+
 public:
     Order(const Person& customer);
 
@@ -33,5 +34,8 @@ protected:
     static int _amount;
 
     virtual void constructName() = 0;
+
+private:
+    void constructNameByID();
 };
 

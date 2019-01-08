@@ -239,6 +239,23 @@ void Program::orderMenuOperations()
     }
 }
 
+DeliveryOrder::DeliveryAddress Program::addAddress()
+{
+    DeliveryOrder::DeliveryAddress address;
+
+    cout << "\nWprowadz adres\n"
+         << "Ulica: ";
+    address.street = getStringInput();
+    cout << "Numer mieszkania: ";
+    address.number = getStringInput();
+    cout << "Kod pocztowy: ";
+    address.zipCode = getStringInput();
+    cout << "Miejscowosc: ";
+    address.city = getStringInput();
+
+    return address;
+}
+
 void Program::addOrder()
 {
     system("cls");
@@ -248,6 +265,7 @@ void Program::addOrder()
     int phoneNumber;
     int numberOfProducts;
     int no;
+    DeliveryOrder::DeliveryAddress address;
     cout << "Wprowadz dane klienta\n"
          << "Imie: ";
     firstName = getStringInput();
@@ -271,10 +289,12 @@ void Program::addOrder()
     switch (getUserOptionChoice(3))
     {
     case 1:
-        order = new COD_Order(customer);
+        address = addAddress();
+        order = new COD_Order(customer, address);
         break;
     case 2:
-        order = new PRE_Order(customer);
+        address = addAddress();
+        order = new PRE_Order(customer, address);
         break;
     case 3:
         order = new PER_Order(customer);
