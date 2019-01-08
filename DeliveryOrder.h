@@ -14,8 +14,9 @@ public:
         };
 
     DeliveryOrder(const Person &person, const DeliveryAddress &address);
+    virtual void showDetails() const;
+    void showAddress() const;
 
 protected:
     DeliveryAddress _address;
-
 };

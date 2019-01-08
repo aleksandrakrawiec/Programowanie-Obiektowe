@@ -17,7 +17,7 @@ public:
     void addItem(const Product &item);
     void showProducts() const;
     void showOrder() const;
-    void showDetails() const;
+    virtual void showDetails() const;
 	void makeArchival();
     bool isActive() const;
 
