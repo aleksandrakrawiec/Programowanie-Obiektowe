@@ -184,7 +184,7 @@ bool Database::saveToFile() const
         *order >> customer >> name >> active;
 
         // write it to file
-        file << customer << std::endl;
+        file << customer; // std::endl not needed here - included in overloaded operator << for Person
         file << name << std::endl;
         file << active << std::endl;
 
