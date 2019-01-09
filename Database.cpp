@@ -329,5 +329,7 @@ bool Database::loadFromFile()
 
     }
 
+    file.close();
+
     return true;
 }
