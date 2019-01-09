@@ -29,6 +29,13 @@ public:
     bool loadFromFile();
 
 private:
+    enum OrderType
+    {
+        COD_OrderType,
+        PRE_OrderType,
+        PER_OrderType
+    };
+
     std::vector<Product*> _products;
     std::vector<Order*> _orders;
 };

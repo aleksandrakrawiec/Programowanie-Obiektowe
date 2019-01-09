@@ -319,7 +319,7 @@ void Program::addOrder()
     }
 
     _database.addOrder(order);
-
+    _database.saveToFile();
 
     _currentMenu = Program::orderMenuOperations;
 }
