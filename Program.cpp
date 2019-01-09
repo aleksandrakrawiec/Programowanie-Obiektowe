@@ -279,10 +279,10 @@ void Program::addOrder()
     Person customer(firstName, lastName, phoneNumber);
 
 
-    cout << "Wybierz rodzaj dostawy:\n"
+    cout << "\nWybierz rodzaj dostawy:\n"
          << "1. Przesylka - platnosc przy odbiorze\n"
          << "2. Przesylka - przedplata\n"
-         << "3. Odbior osobisty";
+         << "3. Odbior osobisty\n";
 
     Order* order;
 
@@ -328,6 +328,7 @@ void Program::addOrder()
         throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
     }
 
+    cout << "\n";
     for (int i = 0; i < numberOfProducts; i++)
     {
         cout << "Wprowadz numer " << i + 1 << " produktu: ";
@@ -361,7 +362,7 @@ void Program::showOrderListMenuOperations()
         switch (getUserOptionChoice(2))
         {
         case 1:
-            _database.getOrder(no-1)->makeArchival(); /// to nie działa, bo to kopia (?)
+            _database.getOrder(no-1)->makeArchival();
             break;
         case 2:
             break;
