@@ -1,11 +1,12 @@
 #include "Order.h"
 #include "Database.h"
+#include "DeliveryOrder.h"
 #include <vector>
 #include <functional>
 
 
 class Program
-{    
+{
 public:
     class UserInterface
     {
@@ -23,7 +24,7 @@ public:
     };
 
 
-	void runProgram();
+    void runProgram();
 
 private:
     Database _database;
@@ -44,6 +45,7 @@ private:
     void showProductList();
     void findProduct();
     void orderMenuOperations();
+    DeliveryOrder::DeliveryAddress addAddress();
     void addOrder();
     void showOrderList();
     void showOrderListMenuOperations();

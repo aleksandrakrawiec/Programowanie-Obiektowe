@@ -82,18 +82,18 @@ std::ostream& operator<<(std::ostream& stream, const Order& order)
 void Order::showDetails() const
 {
 	system("cls");
-	cout << "DANE KLIENTA\n"
-		<< "Imie: " << _customer.getFirstName()
-		<< "\nNazwisko: " << _customer.getLastName()
-		<< "\nNumer telefonu: " << _customer.getPhoneNumber()
-        << "\n\nPRODUKTY\n";
+    cout << "Zamowienie " << _name << "\n\n";
+    cout << "DANE KLIENTA\n";
+    _customer.showPerson();
+
+    cout << "\n\nPRODUKTY\n";
 
 	Program::UserInterface::showProductListHeaders();
     for (unsigned int i = 0; i < _products.size(); i++)
 	{
 		_products[i].printInfo();
 	}
-	cout << "\nLACZNA WARTOSC ZAMOWIENIA: " << _value;
+    cout << "\nLACZNA WARTOSC ZAMOWIENIA: " << _value << "\n";
 }
 
 void Order::makeArchival()

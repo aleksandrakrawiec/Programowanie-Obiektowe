@@ -5,8 +5,18 @@
 class DeliveryOrder : public Order
 {
 public:
-    DeliveryOrder(const Person &person);
+    struct DeliveryAddress
+        {
+            std::string street;
+            std::string number;
+            std::string zipCode;
+            std::string city;
+        };
+
+    DeliveryOrder(const Person &person, const DeliveryAddress &address);
+    virtual void showDetails() const;
+    void showAddress() const;
 
 protected:
-
+    DeliveryAddress _address;
 };

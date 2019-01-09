@@ -32,12 +32,9 @@ int Person::getPhoneNumber() const
 
 void Person::showPerson() const
 {
-	cout.width(20);
-	cout << _firstName;
-	cout.width(20);
-	cout << _lastName;
-	cout.width(15);
-	cout << _phoneNumber << "\n";
+    std::cout << "Imie: " << _firstName
+         << "\nNazwisko: " << _lastName
+         << "\nNumer telefonu: " << _phoneNumber;
 }
 
 std::ostream& operator<<(std::ostream& stream, const Person& person)
