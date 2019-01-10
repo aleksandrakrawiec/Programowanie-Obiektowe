@@ -39,9 +39,9 @@ void Person::showPerson() const
 
 std::ostream& operator<<(std::ostream& stream, const Person& person)
 {
-    stream << person._firstName;
-    stream << person._lastName;
-    stream << person._phoneNumber;
+    stream << person._firstName << std::endl;
+    stream << person._lastName << std::endl;
+    stream << person._phoneNumber << std::endl;
 
     return stream;
 }
