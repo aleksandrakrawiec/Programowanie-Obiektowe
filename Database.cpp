@@ -164,17 +164,27 @@ bool Database::saveToFile() const
         // znalazłem troche lepszy sposób, ale to wyżej też możesz przeanalizować
         // kod mowi sam za siebie
         // typeid działa po dodaniu headera <typeinfo>
+        OrderType orderType;
+
         if (typeid(*order) == typeid(COD_Order))
+        {
             file << COD_OrderType << std::endl; // it gonna write '0'
-
-        else if (typeid(*order) == typeid(PRE_Order)) // it gonna write '1' ect..
-            file << PRE_OrderType << std::endl;
-
+            orderType = COD_OrderType;
+        }
+        else if (typeid(*order) == typeid(PRE_Order))
+        {
+            file << PRE_OrderType << std::endl; // it gonna write '1' ect..
+            orderType = PRE_OrderType;
+        }
         else if (typeid(*order) == typeid(PER_Order))
+        {
             file << PER_OrderType << std::endl;
-
+            orderType = PER_OrderType;
+        }
         else
+        {
             return false;
+        }
 
         Person customer;
         string name;
@@ -184,9 +194,26 @@ bool Database::saveToFile() const
         *order >> customer >> name >> active;
 
         // write it to file
-        file << customer; // std::endl not needed here - included in overloaded operator << for Person
+        file << customer << std::endl;
         file << name << std::endl;
         file << active << std::endl;
+
+        if (orderType != PER_OrderType)
+        {
+            /* Zmienna order jest typu Order*. A my chcemy wydobyć adres zamówienia.
+             * My wiemy, że teraz order wskazuje na COD_Order lub PRE_Order, bo sprawdzilismy to ifem.
+             * Ale nasza zmienna order jest typu Order*, to nie możemy wywolać order->getAddress()
+             * bo w klasie Order nie ma zadeklarowanej takiej metody. (nie skompiluje sie nawet)
+             * Musimy zrzutować w dół na taki typ, który ma zadeklarowaną metode getAddress().
+             * Dlatego rzutujemy na DeliveryOrder. Wtedy mamy pewność, że możemy wywołać getAddress(). */
+
+            DeliveryOrder* deliveryOrder = dynamic_cast<DeliveryOrder*>(order);
+
+            if (deliveryOrder == nullptr)
+                return false;
+
+            file << deliveryOrder->getAddress() << std::endl;
+        }
 
         // write count of products for particular order
         int productsCount = order->getProductsCount();
@@ -290,15 +317,31 @@ bool Database::loadFromFile()
 
         Person customer(customerFirstName, customerLastName, customerPhoneNumber);
 
+        DeliveryOrder::DeliveryAddress address;
+        if (orderType != PER_OrderType)
+        {
+            std::getline(file, input);
+            address.street = input;
+
+            std::getline(file, input);
+            address.number = input;
+
+            std::getline(file, input);
+            address.zipCode = input;
+
+            std::getline(file, input);
+            address.city = input;
+        }
+
         Order* order;
 
         switch (orderType)
         {
         case COD_OrderType:
-            order = new COD_Order(customer);
+            order = new COD_Order(customer, address);
             break;
         case PRE_OrderType:
-            order = new PRE_Order(customer);
+            order = new PRE_Order(customer, address);
             break;
         case PER_OrderType:
             order = new PER_Order(customer);

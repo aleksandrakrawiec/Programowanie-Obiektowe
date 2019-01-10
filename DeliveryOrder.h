@@ -16,7 +16,11 @@ public:
     DeliveryOrder(const Person &person, const DeliveryAddress &address);
     virtual void showDetails() const;
     void showAddress() const;
+    DeliveryAddress getAddress() const;
+
 
 protected:
     DeliveryAddress _address;
 };
+
+std::ostream& operator<<(std::ostream& stream, const DeliveryOrder::DeliveryAddress& address);

@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& stream, const Person& person)
 {
     stream << person._firstName << std::endl;
     stream << person._lastName << std::endl;
-    stream << person._phoneNumber << std::endl;
+    stream << person._phoneNumber;
 
     return stream;
 }
