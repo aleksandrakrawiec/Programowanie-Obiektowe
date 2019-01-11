@@ -72,7 +72,7 @@ void Program::showArchivalOrders()
 //        order->showOrder();
     });
 
-    _currentMenu = Program::showOrderListMenuOperations;
+    _currentMenu = Program::showArchivalOrdersOperations;
 
 }
 
@@ -140,7 +140,6 @@ void Program::showProductList()
 
     std::for_each(products.begin(), products.end(), [](Product* product){
 //        product->printInfo();
-        // dereferencja, bo używamy product to wskaźnik, a operator oczekuje obiektu, niewskaźnika
         cout << *product;
     });
 
@@ -362,7 +361,7 @@ void Program::showOrderListMenuOperations()
         switch (getUserOptionChoice(2))
         {
         case 1:
-            _database.getOrder(no-1)->makeArchival(); /// to nie działa, bo to kopia (?)
+            _database.getOrder(no-1)->makeArchival();
             break;
         case 2:
             break;
@@ -372,6 +371,39 @@ void Program::showOrderListMenuOperations()
 
         system("cls");
         _currentMenu = Program::showOrderList;
+        break;
+    case 2:
+        _currentMenu = Program::orderMenuOperations;
+        break;
+    default:
+        throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+    }
+}
+
+void Program::showArchivalOrdersOperations()
+{
+    _userInterface.showOrderListMenu();
+
+    switch (getUserOptionChoice(2))
+    {
+    case 1:
+        int no;
+        cout << "\nPodaj numer zamowienia ";
+        no = getIntInput();
+        _database.getOrder(no-1)->showDetails();
+
+        cout << "\n1. PROWROT";
+
+        switch (getUserOptionChoice(1))
+        {
+        case 1:
+            break;
+        default:
+            throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+        }
+
+        system("cls");
+        _currentMenu = Program::showArchivalOrders;
         break;
     case 2:
         _currentMenu = Program::orderMenuOperations;
@@ -482,11 +514,6 @@ int Program::getUserOptionChoice(int optionsNumber) const
         }
     }
 
-    // lambda, która zamienia char na int
-    // moglbym napisac:
-    // return input - '0';
-    // ale wtedy nie od razu wiadomo o co chodzi. a tak nazwa funkcji mowi co sie dzieje
-    // i użylem lambdy, bo nie ma sensu tworzyć zwykłej funkcji, żeby użyć jej tylko w jednym miejscu
     auto charToInt = [](char value) ->int { return (value - '0'); };
 
     return charToInt(input);

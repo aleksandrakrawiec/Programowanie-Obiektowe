@@ -49,6 +49,7 @@ private:
     void addOrder();
     void showOrderList();
     void showOrderListMenuOperations();
+    void showArchivalOrdersOperations();
     void findProductMenu(Product *product);
     void editProduct(Product *product);
 
