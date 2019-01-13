@@ -38,7 +38,7 @@ public:
     Order& operator>> (bool& active);
 
     Product& operator[](int index);
-    const Product& operator[](int index) const; // for const objects
+    const Product& operator[](int index) const;
 
 protected:
     std::vector <Product> _products;

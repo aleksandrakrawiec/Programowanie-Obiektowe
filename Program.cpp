@@ -343,7 +343,7 @@ void Program::addOrder()
     _currentMenu = Program::orderMenuOperations;
 }
 
-void Program::showOrderListMenuOperations()
+void Program::showActiveOrdersOperations()
 {
     _userInterface.showOrderListMenu();
 
@@ -353,24 +353,46 @@ void Program::showOrderListMenuOperations()
         int no;
         cout << "\nPodaj numer zamowienia ";
         no = getIntInput();
-        _database.getOrder(no-1)->showDetails();
 
-        cout << "\n1. PRZENIES DO ARCHIWUM"
-             << "\n2. POWROT";
-
-        switch (getUserOptionChoice(2))
+        if(_database.getOrder(no-1)->isActive())
         {
-        case 1:
-            _database.getOrder(no-1)->makeArchival();
-            break;
-        case 2:
-            break;
-        default:
-            throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+
+            _database.getOrder(no-1)->showDetails();
+
+            cout << "\n1. PRZENIES DO ARCHIWUM"
+                 << "\n2. POWROT";
+
+            switch (getUserOptionChoice(2))
+            {
+            case 1:
+                _database.getOrder(no-1)->makeArchival();
+                break;
+            case 2:
+                break;
+            default:
+                throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+            }
+
+            system("cls");
+            _currentMenu = Program::showOrderList;
+        }
+        else
+        {
+            system("cls");
+            cout << "Nie znaleziono pasujacego zamowienia\n";
+            cout << "1. POWROT";
+
+            switch (getUserOptionChoice(1))
+            {
+            case 1:
+                system("cls");
+                _currentMenu = Program::showOrderList;
+                break;
+            default:
+                throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+            }
         }
 
-        system("cls");
-        _currentMenu = Program::showOrderList;
         break;
     case 2:
         _currentMenu = Program::orderMenuOperations;
@@ -390,20 +412,40 @@ void Program::showArchivalOrdersOperations()
         int no;
         cout << "\nPodaj numer zamowienia ";
         no = getIntInput();
-        _database.getOrder(no-1)->showDetails();
-
-        cout << "\n1. PROWROT";
-
-        switch (getUserOptionChoice(1))
+        if(!(_database.getOrder(no-1)->isActive()))
         {
-        case 1:
-            break;
-        default:
-            throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+            _database.getOrder(no-1)->showDetails();
+
+            cout << "\n1. PROWROT";
+
+            switch (getUserOptionChoice(1))
+            {
+            case 1:
+                break;
+            default:
+                throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+            }
+
+            system("cls");
+            _currentMenu = Program::showArchivalOrders;
+        }
+        else
+        {
+            system("cls");
+            cout << "Nie znaleziono pasujacego zamowienia\n";
+            cout << "1. POWROT";
+
+            switch (getUserOptionChoice(1))
+            {
+            case 1:
+                system("cls");
+                _currentMenu = Program::showArchivalOrders;
+                break;
+            default:
+                throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
+            }
         }
 
-        system("cls");
-        _currentMenu = Program::showArchivalOrders;
         break;
     case 2:
         _currentMenu = Program::orderMenuOperations;
@@ -425,7 +467,7 @@ void Program::showOrderList()
 //            order->showOrder();
     }
 
-    _currentMenu = Program::showOrderListMenuOperations;
+    _currentMenu = Program::showActiveOrdersOperations;
 }
 
 void Program::findProductMenu(Product* product)

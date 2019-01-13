@@ -119,14 +119,6 @@ Order &Order::operator<<(const Person &customer)
     return *this;
 }
 
-//std::ostream& operator<<(std::ostream &stream, const Person &person)
-//{
-//    stream << person.getFirstName() << std::endl;
-//    stream << person.getLastName() << std::endl;
-//    stream << person.getPhoneNumber() << std::endl;
-
-//    return stream;
-//}
 
 Order &Order::operator<<(const std::string &name)
 {

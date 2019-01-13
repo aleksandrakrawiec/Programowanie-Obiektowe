@@ -114,71 +114,41 @@ bool Database::saveToFile() const
     if (!file.is_open())
         return false;
 
-    // write products count
     file << _products.size() << std::endl;
 
-    // write data of all products
     for (const auto& product : _products)
     {
         string name;
         float price;
         bool availability;
 
-        // extract product data using overloaded >> operator
         *product >> name >> price >> availability;
 
-        // write it to file
         file << name << std::endl;
         file << price << std::endl;
-        file << availability << std::endl; // bool implicitly casts to int, so value will be 0 or 1
+        file << availability << std::endl;
     }
 
-    // write orders count
     file << _orders.size() << std::endl;
 
-    // write data of all orders
     for (auto order : _orders)
     {
-        // we need a way to define exact order type, i.e. is it COD_Order, PER_Order or PRE_Order
-        // it can be done in that way:
-        // POL: musimy zapisać jakiego dokładnie typu jest zamówienie, tzn czy to COD_Order itp
-
-        // we try to cast order to COD_Order. if that particular order is really pointing to COD_Order, then pointer we created is not nullptr
-        // POL: próbujemy zrzutować nasze zamówienie na typ COD_Order. jeżeli to się powiedzie, to nasza zmienna cod_order nie bedzie nullptr.
-        // jeżeli order nie będzie typu COD_Order, to cod_order bedzie nullptrem.
-        // jeżeli jedno rzutowanie się powiedzie, to na pewno inne sie nie powiodą, więc można zapisać to tak jak niżej
-
-//        COD_Order* cod_order = dynamic_cast<COD_Order*>(order);
-//        if (cod_order != nullptr)
-//            file << 0 << std::endl; // let 0 means COD_Order type
-
-//        PRE_Order* pre_order = dynamic_cast<PRE_Order*>(order);
-//        if (pre_order != nullptr)
-//            file << 1 << std::endl;
-
-//        PER_Order* per_order = dynamic_cast<PER_Order*>(order);
-//        if (per_order != nullptr)
-//            file << 2 << std::endl;
-
-
-        // znalazłem troche lepszy sposób, ale to wyżej też możesz przeanalizować
-        // kod mowi sam za siebie
         // typeid działa po dodaniu headera <typeinfo>
         OrderType orderType;
 
         if (typeid(*order) == typeid(COD_Order))
         {
-            file << COD_OrderType << std::endl; // it gonna write '0'
+            file << COD_OrderType << std::endl; // 0
             orderType = COD_OrderType;
         }
         else if (typeid(*order) == typeid(PRE_Order))
         {
-            file << PRE_OrderType << std::endl; // it gonna write '1' ect..
+            file << PRE_OrderType << std::endl; // 1
             orderType = PRE_OrderType;
         }
         else if (typeid(*order) == typeid(PER_Order))
         {
-            file << PER_OrderType << std::endl;
+            file << PER_OrderType << std::endl; // 2
             orderType = PER_OrderType;
         }
         else
@@ -190,24 +160,15 @@ bool Database::saveToFile() const
         string name;
         bool active;
 
-        // extract order 'single' data
         *order >> customer >> name >> active;
 
-        // write it to file
         file << customer << std::endl;
         file << name << std::endl;
         file << active << std::endl;
 
         if (orderType != PER_OrderType)
         {
-            /* Zmienna order jest typu Order*. A my chcemy wydobyć adres zamówienia.
-             * My wiemy, że teraz order wskazuje na COD_Order lub PRE_Order, bo sprawdzilismy to ifem.
-             * Ale nasza zmienna order jest typu Order*, to nie możemy wywolać order->getAddress()
-             * bo w klasie Order nie ma zadeklarowanej takiej metody. (nie skompiluje sie nawet)
-             * Musimy zrzutować w dół na taki typ, który ma zadeklarowaną metode getAddress().
-             * Dlatego rzutujemy na DeliveryOrder. Wtedy mamy pewność, że możemy wywołać getAddress(). */
-
-            DeliveryOrder* deliveryOrder = dynamic_cast<DeliveryOrder*>(order);
+            DeliveryOrder* deliveryOrder = dynamic_cast<DeliveryOrder*>(order);  // rzutowanie
 
             if (deliveryOrder == nullptr)
                 return false;
@@ -215,15 +176,11 @@ bool Database::saveToFile() const
             file << deliveryOrder->getAddress() << std::endl;
         }
 
-        // write count of products for particular order
         int productsCount = order->getProductsCount();
         file << productsCount << std::endl;
 
         for (int i = 0; i < productsCount; ++i)
         {
-            // get product number from order using overloaded [] opeartor
-            // order must be dereferenced first, because it is a pointer, to use operator[] you need an object
-            // brackets are neccessary, *order[i] doesn't work
 
             int productNumber = (*order)[i].getNo();
             file << productNumber << std::endl;
@@ -238,30 +195,24 @@ bool Database::loadFromFile()
 {
     std::ifstream file(FILENAME);
 
-    // something went wrong, return false
     if (!file.is_open())
         return false;
 
-    // check is file empty
     file.seekg(0, file.end);
     if (file.tellg() == 0)
         return true;
 
     file.seekg(0, file.beg);
 
-    // clear all products
     _products.clear();
     _orders.clear();
 
-    // it's gonna store every read line
     std::string input;
 
-    // read products count
     std::getline(file, input);
     int productCount = std::stoi(input);
 
     auto loadProductFromFile = [this, &file, &input]() {
-        // read name, price and availability
         std::getline(file, input);
         string name = input;
 
@@ -271,7 +222,6 @@ bool Database::loadFromFile()
         std::getline(file, input);
         bool availability = static_cast<bool>(std::stoi(input));
 
-        // create product and write values to it
         Product* product = new Product();
         *product << name << price << availability;
 
@@ -282,18 +232,16 @@ bool Database::loadFromFile()
     {
         Product* product = loadProductFromFile();
 
-        // use this method to ensure correct product insertion
         addProduct(product);
     }
 
-    // read orders count
     std::getline(file, input);
     int ordersCount = std::stoi(input);
 
     for (int i = 0; i < ordersCount; ++i)
     {
         std::getline(file, input);
-        // rzutujemy int na enuma, co jest ok
+        // rzutowanie int na enuma
         OrderType orderType = static_cast<OrderType>(std::stoi(input));
 
         std::getline(file, input);
@@ -308,11 +256,9 @@ bool Database::loadFromFile()
         std::getline(file, input);
         string name = input;
 
-//        std::getline(file, input);
-//        float value = atof(input.c_str());
 
         std::getline(file, input);
-        // rzutujemy int na boola, tez spoko
+        // rzutowanie int na boola
         bool active = static_cast<bool>(std::stoi(input));
 
         Person customer(customerFirstName, customerLastName, customerPhoneNumber);
