@@ -5,6 +5,11 @@ using std::cout;
 using std::string;
 
 
+Person::Person()
+{
+
+}
+
 Person::Person(string firstName, string lastName, int phoneNumber) :
 	_firstName(firstName),
 	_lastName(lastName),
@@ -34,14 +39,9 @@ void Person::showPerson() const
 
 std::ostream& operator<<(std::ostream& stream, const Person& person)
 {
-    stream.width(20);
-    stream << person._firstName;
-
-    stream.width(20);
-    stream << person._lastName;
-
-    stream.width(15);
-    stream << person._phoneNumber << "\n";
+    stream << person._firstName << std::endl;
+    stream << person._lastName << std::endl;
+    stream << person._phoneNumber;
 
     return stream;
 }

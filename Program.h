@@ -48,7 +48,8 @@ private:
     DeliveryOrder::DeliveryAddress addAddress();
     void addOrder();
     void showOrderList();
-    void showOrderListMenuOperations();
+    void showActiveOrdersOperations();
+    void showArchivalOrdersOperations();
     void findProductMenu(Product *product);
     void editProduct(Product *product);
 

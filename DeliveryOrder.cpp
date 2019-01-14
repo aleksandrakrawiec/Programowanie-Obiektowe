@@ -35,3 +35,18 @@ void DeliveryOrder::showAddress() const
     cout << _address.street << " " << _address.number << "\n"
          << _address.zipCode << " " << _address.city << "\n";
 }
+
+DeliveryOrder::DeliveryAddress DeliveryOrder::getAddress() const
+{
+    return _address;
+}
+
+std::ostream& operator<<(std::ostream &stream, const DeliveryOrder::DeliveryAddress &address)
+{
+    stream << address.street << std::endl;
+    stream << address.number << std::endl;
+    stream << address.zipCode << std::endl;
+    stream << address.city;
+
+    return stream;
+}

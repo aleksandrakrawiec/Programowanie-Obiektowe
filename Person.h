@@ -8,6 +8,7 @@ using std::string;
 class Person
 {
 public:
+    Person();
     Person(string firstName, string lastName, int phoneNumber);
 
 	string getFirstName() const;

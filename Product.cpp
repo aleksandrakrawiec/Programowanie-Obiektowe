@@ -7,13 +7,17 @@ using std::string;
 
 int Product::_amount = 0;
 
-Product::Product() {}
+Product::Product() :
+    _no(_amount + 1)
+{
 
-Product::Product(const string& name, float price) :
+}
+
+Product::Product(const string& name, float price, bool availability) :
     _no(_amount + 1),
 	_name(name),
 	_price(price),
-	_availability(true)
+    _availability(availability)
 {
 }
 
