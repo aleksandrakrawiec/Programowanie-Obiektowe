@@ -417,7 +417,7 @@ void Program::showArchivalOrdersOperations()
         {
             _database.getOrder(no-1)->showDetails();
 
-            cout << "\n1. PROWROT";
+            cout << "\n1. POWROT";
 
             switch (getUserOptionChoice(1))
             {
