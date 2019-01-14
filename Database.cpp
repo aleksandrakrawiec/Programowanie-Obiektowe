@@ -80,9 +80,11 @@ std::vector<Product *> Database::getAllProducts() const
 
 Product *Database::getProduct(const std::string &name) const
 {
-    auto foundPosition = std::find_if(_products.begin(), _products.end(), [name](Product* p){
-        return (p->getName() == name);
-    });
+//    auto foundPosition = std::find_if(_products.begin(), _products.end(), [name](Product* p){
+//        return (p->getName() == name);
+//    });
+
+    auto foundPosition = std::find_if(_products.begin(), _products.end(), Product::CompareByName(name));
 
     if (foundPosition == _products.end())
         return nullptr;
@@ -92,9 +94,11 @@ Product *Database::getProduct(const std::string &name) const
 
 Product *Database::getProduct(int no) const
 {
-    auto foundPosition = std::find_if(_products.begin(), _products.end(), [no](Product* p){
-        return (p->getNo() == no);
-    });
+//    auto foundPosition = std::find_if(_products.begin(), _products.end(), [no](Product* p){
+//        return (p->getNo() == no);
+//    });
+
+    auto foundPosition = std::find_if(_products.begin(), _products.end(), Product::CompareByNumber(no));
 
     if (foundPosition == _products.end())
         return nullptr;

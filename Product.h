@@ -7,6 +7,32 @@ using std::string;
 class Product
 {
 public:
+    class CompareByName
+    {
+    public:
+        CompareByName(const string& name) : _name(name) {}
+        bool operator()(Product* product) const
+        {
+            return (product->getName() == _name);
+        }
+
+    private:
+        string _name;
+    };
+
+    class CompareByNumber
+    {
+    public:
+        CompareByNumber(int number) : _number(number) {}
+        bool operator()(Product* product) const
+        {
+            return (product->getNo() == _number);
+        }
+
+    private:
+        int _number;
+    };
+
     Product();
     Product(const string& name, float price, bool availability = true);
 
