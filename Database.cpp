@@ -111,7 +111,7 @@ Order* Database::getOrder(int id)
     return _orders[id];
 }
 
-int Database::getOrdersAmount() const
+int Database::getOrdersCount() const
 {
     return _orders.size();
 }

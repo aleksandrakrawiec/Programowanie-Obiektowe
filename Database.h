@@ -24,7 +24,7 @@ public:
     Product* getProduct(const std::string& name) const;
     Product* getProduct(int no) const;
     Order* getOrder(int id);
-    int getOrdersAmount() const;
+    int getOrdersCount() const;
 
     bool saveToFile() const;
     bool loadFromFile();

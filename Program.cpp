@@ -355,7 +355,7 @@ void Program::showActiveOrdersOperations()
         cout << "\nPodaj numer zamowienia ";
         no = getIntInput();
 
-        if(!(no > _database.getOrdersAmount()) && _database.getOrder(no-1)->isActive())
+        if(!(no > _database.getOrdersCount()) && _database.getOrder(no-1)->isActive())
         {
 
             _database.getOrder(no-1)->showDetails();
@@ -413,7 +413,7 @@ void Program::showArchivalOrdersOperations()
         int no;
         cout << "\nPodaj numer zamowienia ";
         no = getIntInput();
-        if(!(no > _database.getOrdersAmount()) && !(_database.getOrder(no-1)->isActive()))
+        if(!(no > _database.getOrdersCount()) && !(_database.getOrder(no-1)->isActive()))
         {
             _database.getOrder(no-1)->showDetails();
 
