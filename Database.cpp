@@ -111,6 +111,11 @@ Order* Database::getOrder(int id)
     return _orders[id];
 }
 
+int Database::getOrdersAmount() const
+{
+    return _orders.size();
+}
+
 bool Database::saveToFile() const
 {
     std::ofstream file(FILENAME);
