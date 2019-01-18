@@ -25,7 +25,7 @@ void DeliveryOrder::showDetails() const
     Program::UserInterface::showProductListHeaders();
     for (unsigned int i = 0; i < _products.size(); i++)
     {
-        _products[i].printInfo();
+        _products[i]->printInfo();
     }
     cout << "\nLACZNA WARTOSC ZAMOWIENIA: " << _value << "\n";
 }

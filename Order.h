@@ -14,7 +14,7 @@ public:
 
     Person getPerson() const;
     float getValue() const;
-    void addItem(const Product &item);
+    void addItem(Product *item);
     void showProducts() const;
     void showOrder() const;
     virtual void showDetails() const;
@@ -44,7 +44,7 @@ public:
     const Product& operator[](int index) const;
 
 protected:
-    std::vector <Product> _products;
+    std::vector <Product*> _products;
     Person _customer;
     float _value = 0;
     int _no;

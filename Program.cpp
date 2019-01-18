@@ -259,7 +259,7 @@ DeliveryOrder::DeliveryAddress Program::addAddress()
 void Program::addOrder()
 {
     system("cls");
-    Product product;
+
     string firstName;
     string lastName;
     int phoneNumber;
@@ -334,7 +334,7 @@ void Program::addOrder()
         cout << "Wprowadz numer " << i + 1 << " produktu: ";
         no = getIntInput();
 
-        product = *products[no - 1];
+        Product* product = products[no - 1];
         order->addItem(product);
     }
 

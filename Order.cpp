@@ -23,10 +23,10 @@ float Order::getValue() const
 	return _value;
 }
 
-void Order::addItem(const Product& item)
+void Order::addItem(Product* item)
 {
 	_products.push_back(item);
-    _value += item.getPrice();
+    _value += item->getPrice();
 }
 
 void Order::showProducts() const
@@ -39,9 +39,9 @@ void Order::showProducts() const
     for (unsigned int i = 0; i < _products.size(); i++)
 	{
 		cout.width(20);
-        cout << _products[i].getName();
+        cout << _products[i]->getName();
 		cout.width(10);
-        cout << _products[i].getPrice();
+        cout << _products[i]->getPrice();
 	}
 }
 
@@ -91,7 +91,7 @@ void Order::showDetails() const
 	Program::UserInterface::showProductListHeaders();
     for (unsigned int i = 0; i < _products.size(); i++)
 	{
-		_products[i].printInfo();
+        _products[i]->printInfo();
 	}
     cout << "\nLACZNA WARTOSC ZAMOWIENIA: " << _value << "\n";
 }
@@ -170,10 +170,10 @@ Order &Order::operator>>(bool &active)
 
 Product& Order::operator[](int index)
 {
-    return _products[index];
+    return *_products[index];
 }
 
 const Product &Order::operator[](int index) const
 {
-    return _products[index];
+    return *_products[index];
 }

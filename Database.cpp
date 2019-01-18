@@ -427,7 +427,7 @@ bool Database::loadFromFile()
             if (product == nullptr)
                 return false;
 
-            order->addItem(*product);
+            order->addItem(product);
         }
 
         addOrder(order);
