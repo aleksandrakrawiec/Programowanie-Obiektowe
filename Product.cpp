@@ -19,6 +19,7 @@ Product::Product(const string& name, float price, bool availability) :
 	_price(price),
     _availability(availability)
 {
+
 }
 
 string Product::getName() const

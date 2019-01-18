@@ -89,6 +89,11 @@ Database::~Database()
     {
         delete productPtr;
     }
+
+    for (auto orderPtr : _orders)
+    {
+        delete orderPtr;
+    }
 }
 
 bool Database::addProduct(Product *product)

@@ -6,9 +6,6 @@
 #include <vector>
 #include <memory>
 
-//using ProductPtr = std::unique_ptr<Product>;
-
-//using OrderPtr = std::unique_ptr<Order>;
 
 class Database
 {
