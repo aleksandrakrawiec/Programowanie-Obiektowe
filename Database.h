@@ -13,6 +13,8 @@
 class Database
 {
 public:
+    Database() = default;
+    Database(const Database& copy);
     ~Database();
     bool addProduct(Product* product);
     void addOrder(Order* order);
@@ -25,6 +27,10 @@ public:
     Product* getProduct(int no) const;
     Order* getOrder(int id);
     int getOrdersCount() const;
+    int getArchivalOrdersCount() const;
+    int getActiveOrdersCount() const;
+
+    void orderListChaged();
 
     bool saveToFile() const;
     bool loadFromFile();
@@ -39,4 +45,8 @@ private:
 
     std::vector<Product*> _products;
     std::vector<Order*> _orders;
+
+    mutable int _tempArchivalOrdersCount;
+    mutable int _tempActiveOrdersCount;
+    mutable bool _isOrderListChanged = false;
 };

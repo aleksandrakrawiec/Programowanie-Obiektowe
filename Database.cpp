@@ -11,6 +11,25 @@
 
 const std::string FILENAME = "database";
 
+Database::Database(const Database& copy)
+{
+    for (int i = 0; i < copy._products.size(); ++i)
+    {
+        Product* product = new Product(*copy._products[i]);
+        _products.push_back(product);
+    }
+
+    for (int i = 0; i < copy._orders.size(); ++i)
+    {
+        Order* order = new Order(*copy._orders[i]);
+        _orders.push_back(order);
+    }
+
+    _tempActiveOrdersCount = copy._tempActiveOrdersCount;
+    _tempArchivalOrdersCount = copy._tempArchivalOrdersCount;
+    _isOrderListChanged = copy._isOrderListChanged;
+}
+
 Database::~Database()
 {
     for (auto productPtr : _products)
@@ -40,6 +59,8 @@ bool Database::addProduct(Product *product)
 void Database::addOrder(Order *order)
 {
     _orders.push_back(order);
+
+    _isOrderListChanged = true;
 }
 
 std::vector<Order *> Database::getArchivalOrders() const
@@ -114,6 +135,39 @@ Order* Database::getOrder(int id)
 int Database::getOrdersCount() const
 {
     return _orders.size();
+}
+
+int Database::getArchivalOrdersCount() const
+{
+    if (_isOrderListChanged)
+    {
+        _tempArchivalOrdersCount = std::count_if(_orders.begin(), _orders.end(), [](Order* order){
+            return !order->isActive();
+        });
+
+        _isOrderListChanged = false;
+    }
+
+    return _tempArchivalOrdersCount;
+}
+
+int Database::getActiveOrdersCount() const
+{
+    if (_isOrderListChanged)
+    {
+        _tempActiveOrdersCount = std::count_if(_orders.begin(), _orders.end(), [](Order* order){
+            return order->isActive();
+        });
+
+        _isOrderListChanged = false;
+    }
+
+    return _tempActiveOrdersCount;
+}
+
+void Database::orderListChaged()
+{
+    _isOrderListChanged = true;
 }
 
 bool Database::saveToFile() const

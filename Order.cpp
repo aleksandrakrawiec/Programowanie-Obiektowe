@@ -111,7 +111,6 @@ int Order::getProductsCount() const
     return _products.size();
 }
 
-
 Order &Order::operator<<(const Person &customer)
 {
     _customer = customer;

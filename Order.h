@@ -22,6 +22,9 @@ public:
     bool isActive() const;
     int getProductsCount() const;
 
+    int getArchivalOrdersCount() const;
+    int getActiveOrdersCount() const;
+
     friend std::ostream& operator<<(std::ostream& stream, const Order& order);
 
 //    friend std::ostream& operator<<(std::ostream& stream, const Person& person);
@@ -54,4 +57,3 @@ protected:
 private:
     void constructNameByID();
 };
-
