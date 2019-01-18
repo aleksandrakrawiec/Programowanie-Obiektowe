@@ -14,6 +14,8 @@ public:
         };
 
     DeliveryOrder(const Person &person, const DeliveryAddress &address);
+    virtual ~DeliveryOrder() = default;
+
     virtual void showDetails() const;
     void showAddress() const;
     DeliveryAddress getAddress() const;

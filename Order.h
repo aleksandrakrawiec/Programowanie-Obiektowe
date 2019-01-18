@@ -11,6 +11,7 @@ class Order
 
 public:
     Order(const Person& customer);
+    virtual ~Order() = default;
 
     Person getPerson() const;
     float getValue() const;
