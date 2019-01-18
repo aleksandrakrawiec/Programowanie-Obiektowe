@@ -21,7 +21,60 @@ Database::Database(const Database& copy)
 
     for (int i = 0; i < copy._orders.size(); ++i)
     {
-        Order* order = new Order(*copy._orders[i]);
+        Order* order;
+
+        Order& currentOrder = *copy._orders[i];
+
+        if (typeid(currentOrder) == typeid(COD_Order))
+        {
+            order = new COD_Order(dynamic_cast<COD_Order&>(currentOrder));
+        }
+        else if (typeid(currentOrder) == typeid(PRE_Order))
+        {
+            order = new PRE_Order(dynamic_cast<PRE_Order&>(currentOrder));
+        }
+        else if (typeid(currentOrder) == typeid(PER_Order))
+        {
+            order = new PER_Order(dynamic_cast<PER_Order&>(currentOrder));
+        }
+
+        _orders.push_back(order);
+    }
+
+    _tempActiveOrdersCount = copy._tempActiveOrdersCount;
+    _tempArchivalOrdersCount = copy._tempArchivalOrdersCount;
+    _isOrderListChanged = copy._isOrderListChanged;
+}
+
+void Database::operator=(const Database &copy)
+{
+    _products.clear();
+    for (int i = 0; i < copy._products.size(); ++i)
+    {
+        Product* product = new Product(*copy._products[i]);
+        _products.push_back(product);
+    }
+
+    _orders.clear();
+    for (int i = 0; i < copy._orders.size(); ++i)
+    {
+        Order* order;
+
+        Order& currentOrder = *copy._orders[i];
+
+        if (typeid(currentOrder) == typeid(COD_Order))
+        {
+            order = new COD_Order(dynamic_cast<COD_Order&>(currentOrder));
+        }
+        else if (typeid(currentOrder) == typeid(PRE_Order))
+        {
+            order = new PRE_Order(dynamic_cast<PRE_Order&>(currentOrder));
+        }
+        else if (typeid(currentOrder) == typeid(PER_Order))
+        {
+            order = new PER_Order(dynamic_cast<PER_Order&>(currentOrder));
+        }
+
         _orders.push_back(order);
     }
 

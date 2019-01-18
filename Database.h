@@ -15,6 +15,7 @@ class Database
 public:
     Database() = default;
     Database(const Database& copy);
+    void operator=(const Database& copy);
     ~Database();
     bool addProduct(Product* product);
     void addOrder(Order* order);
