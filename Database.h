@@ -24,6 +24,7 @@ public:
     Product* getProduct(const std::string& name) const;
     Product* getProduct(int no) const;
     Order* getOrder(int id);
+    Order* getOrder(const std::string& name) const;
     int getOrdersCount() const;
     int getArchivalOrdersCount() const;
     int getActiveOrdersCount() const;

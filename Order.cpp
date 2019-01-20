@@ -7,8 +7,7 @@ using std::string;
 int Order::_amount = 0;
 
 Order::Order(const Person &customer) :
-    _customer(customer),
-    _no(_amount + 1)
+    _customer(customer)
 {
     _amount++;
 }
@@ -21,6 +20,11 @@ Person Order::getPerson() const
 float Order::getValue() const
 {
 	return _value;
+}
+
+std::string Order::getName() const
+{
+    return _name;
 }
 
 void Order::addItem(Product* item)
@@ -47,8 +51,6 @@ void Order::showProducts() const
 
 void Order::showOrder() const
 {
-	cout.width(10);
-	cout << _no;
     cout.width(10);
     cout << _name;
 	cout.width(20);
@@ -61,9 +63,6 @@ void Order::showOrder() const
 
 std::ostream& operator<<(std::ostream& stream, const Order& order)
 {
-    stream.width(10);
-    stream << order._no;
-
     stream.width(10);
     stream << order._name;
 

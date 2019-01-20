@@ -1,7 +1,5 @@
 #include "Product.h"
 
-
-
 using std::cout;
 using std::string;
 

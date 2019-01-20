@@ -32,6 +32,7 @@ void Program::runProgram()
             _currentMenu(this);
         }
     }
+    _database.saveToFile();
 }
 
 
@@ -68,8 +69,8 @@ void Program::showArchivalOrders()
     std::vector<Order*> archivalOrders = _database.getArchivalOrders();
 
     std::for_each(archivalOrders.begin(), archivalOrders.end(), [](Order* order) {
-        cout << *order;
-//        order->showOrder();
+//        cout << *order;
+        order->showOrder();
     });
 
     _currentMenu = Program::showArchivalOrdersOperations;
@@ -331,11 +332,11 @@ void Program::addOrder()
     cout << "\n";
     for (int i = 0; i < numberOfProducts; i++)
     {
+        Product *product = nullptr;
         cout << "Wprowadz numer " << i + 1 << " produktu: ";
         no = getIntInput();
-
-        Product* product = products[no - 1];
-        order->addItem(product);
+        product = _database.getProduct(no-1);
+        if(product != nullptr) order->addItem(product);
     }
 
     _database.addOrder(order);
@@ -347,18 +348,20 @@ void Program::addOrder()
 void Program::showActiveOrdersOperations()
 {
     _userInterface.showOrderListMenu();
+    Order *order;
+    string name;
 
     switch (getUserOptionChoice(2))
     {
     case 1:
-        int no;
-        cout << "\nPodaj numer zamowienia ";
-        no = getIntInput();
+        cout << "\nPodaj ID zamowienia ";
+        name = getStringInput();
+        order = _database.getOrder(name);
 
-        if(!(no > _database.getOrdersCount()) && _database.getOrder(no-1)->isActive())
+        if(order != nullptr && order->isActive())
         {
 
-            _database.getOrder(no-1)->showDetails();
+            order->showDetails();
 
             cout << "\n1. PRZENIES DO ARCHIWUM"
                  << "\n2. POWROT";
@@ -366,7 +369,7 @@ void Program::showActiveOrdersOperations()
             switch (getUserOptionChoice(2))
             {
             case 1:
-                _database.getOrder(no-1)->makeArchival();
+                _database.getOrder(name)->makeArchival();
                 break;
             case 2:
                 break;
@@ -406,16 +409,20 @@ void Program::showActiveOrdersOperations()
 void Program::showArchivalOrdersOperations()
 {
     _userInterface.showOrderListMenu();
+    Order *order;
+    string name;
 
     switch (getUserOptionChoice(2))
     {
     case 1:
-        int no;
-        cout << "\nPodaj numer zamowienia ";
-        no = getIntInput();
-        if(!(no > _database.getOrdersCount()) && !(_database.getOrder(no-1)->isActive()))
+        cout << "\nPodaj ID zamowienia ";
+        name  = getStringInput();
+        order = _database.getOrder(name);
+
+        if(order != nullptr && !(order->isActive()))
         {
-            _database.getOrder(no-1)->showDetails();
+
+            order->showDetails();
 
             cout << "\n1. POWROT";
 
@@ -464,8 +471,8 @@ void Program::showOrderList()
     for(auto order : orders)
     {
         if(order->isActive())
-            cout << *order;
-//            order->showOrder();
+//            cout << *order;
+            order->showOrder();
     }
 
     _currentMenu = Program::showActiveOrdersOperations;
@@ -637,9 +644,7 @@ void Program::UserInterface::showProductListHeaders()
 void Program::UserInterface::showOrderListHeaders() const
 {
     cout.width(10);
-    cout << "Numer";
-    cout.width(10);
-    cout << "Nazwa";
+    cout << "ID";
     cout.width(20);
     cout << "Imie";
     cout.width(20);

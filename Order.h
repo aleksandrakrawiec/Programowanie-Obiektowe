@@ -15,6 +15,7 @@ public:
 
     Person getPerson() const;
     float getValue() const;
+    std::string getName() const;
     void addItem(Product *item);
     void showProducts() const;
     void showOrder() const;
@@ -48,7 +49,6 @@ protected:
     std::vector <Product*> _products;
     Person _customer;
     float _value = 0;
-    int _no;
     std::string _name;
     bool _active = true;
     static int _amount;

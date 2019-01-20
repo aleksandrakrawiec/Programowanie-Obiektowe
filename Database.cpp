@@ -190,6 +190,19 @@ Order* Database::getOrder(int id)
     return _orders[id];
 }
 
+Order *Database::getOrder(const std::string &name) const
+{
+    auto foundPosition = std::find_if(_orders.begin(), _orders.end(), [name](Order* o){
+        return (o->getName() == name);
+    });
+
+
+    if (foundPosition == _orders.end())
+        return nullptr;
+
+    return *foundPosition;
+}
+
 int Database::getOrdersCount() const
 {
     return _orders.size();
