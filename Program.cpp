@@ -66,9 +66,9 @@ void Program::showArchivalOrders()
     system("cls");
     _userInterface.showOrderListHeaders();
 
-    std::vector<Order*> archivalOrders = _database.getArchivalOrders();
+    std::vector<OrderPtr> archivalOrders = _database.getArchivalOrders();
 
-    std::for_each(archivalOrders.begin(), archivalOrders.end(), [](Order* order) {
+    std::for_each(archivalOrders.begin(), archivalOrders.end(), [](OrderPtr order) {
 //        cout << *order;
         order->showOrder();
     });
@@ -285,20 +285,21 @@ void Program::addOrder()
          << "2. Przesylka - przedplata\n"
          << "3. Odbior osobisty\n";
 
-    Order* order;
+    OrderPtr order;
 
     switch (getUserOptionChoice(3))
     {
     case 1:
         address = addAddress();
-        order = new COD_Order(customer, address);
+//        order = new COD_Order(customer, address);
+        order = std::make_shared<COD_Order>(customer, address);
         break;
     case 2:
         address = addAddress();
-        order = new PRE_Order(customer, address);
+        order = std::make_shared<PRE_Order>(customer, address);
         break;
     case 3:
-        order = new PER_Order(customer);
+        order = std::make_shared<PER_Order>(customer);
         break;
     default:
         throw std::invalid_argument("getUserOptionChoice - niepoprawna wartosc argumentu");
@@ -348,7 +349,7 @@ void Program::addOrder()
 void Program::showActiveOrdersOperations()
 {
     _userInterface.showOrderListMenu();
-    Order *order;
+    OrderPtr order;
     string name;
 
     switch (getUserOptionChoice(2))
@@ -409,7 +410,7 @@ void Program::showActiveOrdersOperations()
 void Program::showArchivalOrdersOperations()
 {
     _userInterface.showOrderListMenu();
-    Order *order;
+    OrderPtr order;
     string name;
 
     switch (getUserOptionChoice(2))

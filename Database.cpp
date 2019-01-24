@@ -21,21 +21,25 @@ Database::Database(const Database& copy)
 
     for (int i = 0; i < copy._orders.size(); ++i)
     {
-        Order* order;
+        OrderPtr order;
 
-        Order& currentOrder = *copy._orders[i];
+        OrderPtr currentOrder = copy._orders[i];
 
-        if (typeid(currentOrder) == typeid(COD_Order))
+        // używamy get(), żeby wyciągnąć "surowy" wskaźnik.
+        if (typeid(*currentOrder) == typeid(COD_Order))
         {
-            order = new COD_Order(dynamic_cast<COD_Order&>(currentOrder));
+//            order = new COD_Order(dynamic_cast<COD_Order&>(currentOrder));
+            order = std::make_shared<COD_Order>(dynamic_cast<COD_Order&>(*currentOrder));
         }
-        else if (typeid(currentOrder) == typeid(PRE_Order))
+        else if (typeid(*currentOrder) == typeid(PRE_Order))
         {
-            order = new PRE_Order(dynamic_cast<PRE_Order&>(currentOrder));
+//            order = new PRE_Order(dynamic_cast<PRE_Order&>(currentOrder));
+            order = std::make_shared<PRE_Order>(dynamic_cast<PRE_Order&>(*currentOrder));
         }
-        else if (typeid(currentOrder) == typeid(PER_Order))
+        else if (typeid(*currentOrder) == typeid(PER_Order))
         {
-            order = new PER_Order(dynamic_cast<PER_Order&>(currentOrder));
+//            order = new PER_Order(dynamic_cast<PER_Order&>(currentOrder));
+            order = std::make_shared<PER_Order>(dynamic_cast<PER_Order&>(*currentOrder));
         }
 
         _orders.push_back(order);
@@ -58,21 +62,25 @@ void Database::operator=(const Database &copy)
     _orders.clear();
     for (int i = 0; i < copy._orders.size(); ++i)
     {
-        Order* order;
+        OrderPtr order;
 
-        Order& currentOrder = *copy._orders[i];
+        OrderPtr currentOrder = copy._orders[i];
 
-        if (typeid(currentOrder) == typeid(COD_Order))
+        // używamy get(), żeby wyciągnąć "surowy" wskaźnik.
+        if (typeid(*currentOrder) == typeid(COD_Order))
         {
-            order = new COD_Order(dynamic_cast<COD_Order&>(currentOrder));
+//            order = new COD_Order(dynamic_cast<COD_Order&>(currentOrder));
+            order = std::make_shared<COD_Order>(dynamic_cast<COD_Order&>(*currentOrder));
         }
-        else if (typeid(currentOrder) == typeid(PRE_Order))
+        else if (typeid(*currentOrder) == typeid(PRE_Order))
         {
-            order = new PRE_Order(dynamic_cast<PRE_Order&>(currentOrder));
+//            order = new PRE_Order(dynamic_cast<PRE_Order&>(currentOrder));
+            order = std::make_shared<PRE_Order>(dynamic_cast<PRE_Order&>(*currentOrder));
         }
-        else if (typeid(currentOrder) == typeid(PER_Order))
+        else if (typeid(*currentOrder) == typeid(PER_Order))
         {
-            order = new PER_Order(dynamic_cast<PER_Order&>(currentOrder));
+//            order = new PER_Order(dynamic_cast<PER_Order&>(currentOrder));
+            order = std::make_shared<PER_Order>(dynamic_cast<PER_Order&>(*currentOrder));
         }
 
         _orders.push_back(order);
@@ -88,11 +96,6 @@ Database::~Database()
     for (auto productPtr : _products)
     {
         delete productPtr;
-    }
-
-    for (auto orderPtr : _orders)
-    {
-        delete orderPtr;
     }
 }
 
@@ -114,16 +117,16 @@ bool Database::addProduct(Product *product)
     return true;
 }
 
-void Database::addOrder(Order *order)
+void Database::addOrder(OrderPtr order)
 {
     _orders.push_back(order);
 
     _isOrderListChanged = true;
 }
 
-std::vector<Order *> Database::getArchivalOrders() const
+std::vector<OrderPtr> Database::getArchivalOrders() const
 {
-    std::vector<Order*> result;
+    std::vector<OrderPtr> result;
 
     for (auto order : _orders)
     {
@@ -136,9 +139,9 @@ std::vector<Order *> Database::getArchivalOrders() const
     return result;
 }
 
-std::vector<Order *> Database::getActiveOrders() const
+std::vector<OrderPtr> Database::getActiveOrders() const
 {
-    std::vector<Order*> result;
+    std::vector<OrderPtr> result;
 
     for (auto order : _orders)
     {
@@ -185,14 +188,14 @@ Product *Database::getProduct(int no) const
     return *foundPosition;
 }
 
-Order* Database::getOrder(int id)
+OrderPtr Database::getOrder(int id)
 {
     return _orders[id];
 }
 
-Order *Database::getOrder(const std::string &name) const
+OrderPtr Database::getOrder(const std::string &name) const
 {
-    auto foundPosition = std::find_if(_orders.begin(), _orders.end(), [name](Order* o){
+    auto foundPosition = std::find_if(_orders.begin(), _orders.end(), [name](OrderPtr o){
         return (o->getName() == name);
     });
 
@@ -212,7 +215,7 @@ int Database::getArchivalOrdersCount() const
 {
     if (_isOrderListChanged)
     {
-        _tempArchivalOrdersCount = std::count_if(_orders.begin(), _orders.end(), [](Order* order){
+        _tempArchivalOrdersCount = std::count_if(_orders.begin(), _orders.end(), [](OrderPtr order){
             return !order->isActive();
         });
 
@@ -226,7 +229,7 @@ int Database::getActiveOrdersCount() const
 {
     if (_isOrderListChanged)
     {
-        _tempActiveOrdersCount = std::count_if(_orders.begin(), _orders.end(), [](Order* order){
+        _tempActiveOrdersCount = std::count_if(_orders.begin(), _orders.end(), [](OrderPtr order){
             return order->isActive();
         });
 
@@ -302,7 +305,7 @@ bool Database::saveToFile() const
 
         if (orderType != PER_OrderType)
         {
-            DeliveryOrder* deliveryOrder = dynamic_cast<DeliveryOrder*>(order);  // rzutowanie
+            DeliveryOrder* deliveryOrder = dynamic_cast<DeliveryOrder*>(order.get());  // rzutowanie
 
             if (deliveryOrder == nullptr)
                 return false;
@@ -413,18 +416,21 @@ bool Database::loadFromFile()
             address.city = input;
         }
 
-        Order* order;
+        OrderPtr order;
 
         switch (orderType)
         {
         case COD_OrderType:
-            order = new COD_Order(customer, address);
+//            order = new COD_Order(customer, address);
+            order = std::make_shared<COD_Order>(customer, address);
             break;
         case PRE_OrderType:
-            order = new PRE_Order(customer, address);
+//            order = new PRE_Order(customer, address);
+            order = std::make_shared<PRE_Order>(customer, address);
             break;
         case PER_OrderType:
-            order = new PER_Order(customer);
+//            order = new PER_Order(customer);
+            order = std::make_shared<PER_Order>(customer);
             break;
         default:
             return false;

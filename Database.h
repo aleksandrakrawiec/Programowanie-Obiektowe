@@ -6,25 +6,28 @@
 #include <vector>
 #include <memory>
 
+using OrderPtr = std::shared_ptr<Order>;
 
 class Database
 {
 public:
+
     Database() = default;
     Database(const Database& copy);
     void operator=(const Database& copy);
     ~Database();
-    bool addProduct(Product* product);
-    void addOrder(Order* order);
 
-    std::vector<Order*> getArchivalOrders() const;
-    std::vector<Order*> getActiveOrders() const;
+    bool addProduct(Product* product);
+    void addOrder(OrderPtr order);
+
+    std::vector<OrderPtr> getArchivalOrders() const;
+    std::vector<OrderPtr> getActiveOrders() const;
     std::vector<Product*> getAllProducts() const;
 
     Product* getProduct(const std::string& name) const;
     Product* getProduct(int no) const;
-    Order* getOrder(int id);
-    Order* getOrder(const std::string& name) const;
+    OrderPtr getOrder(int id);
+    OrderPtr getOrder(const std::string& name) const;
     int getOrdersCount() const;
     int getArchivalOrdersCount() const;
     int getActiveOrdersCount() const;
@@ -43,7 +46,7 @@ private:
     };
 
     std::vector<Product*> _products;
-    std::vector<Order*> _orders;
+    std::vector<OrderPtr> _orders;
 
     mutable int _tempArchivalOrdersCount;
     mutable int _tempActiveOrdersCount;
